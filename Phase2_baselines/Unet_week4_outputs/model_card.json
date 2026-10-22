@@ -1,0 +1,42 @@
+{
+  "model_name": "mLHealth 360 - 2.5D U-Net",
+  "version": "baseline_smoke_test_v1",
+  "intended_use": "Development baseline for medical image segmentation research",
+  "not_for_clinical_use": true,
+  "architecture": "2.5D U-Net",
+  "parameter_count": 483686,
+  "input_shape_per_sample": [
+    9,
+    512,
+    512
+  ],
+  "output_shape_per_sample": [
+    6,
+    512,
+    512
+  ],
+  "mask_ids_observed": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "clinical_class_mapping": "Unconfirmed",
+  "dropout_layers": 4,
+  "dropout_probability": 0.2,
+  "training_studies": 153,
+  "validation_studies": 39,
+  "training_epochs": 35,
+  "best_validation_macro_dice": 0.4255727384734307,
+  "limitations": [
+    "Dataset provenance requires confirmation",
+    "Clinical meaning of mask IDs requires confirmation",
+    "Only three training epochs completed",
+    "Small and imbalanced validation subset",
+    "Active Learning pool overlap has not been verified",
+    "Stored image intensity and padding convention require confirmation"
+  ],
+  "checkpoint": "C:\\Users\\whate\\Documents\\Brain CT Hemorrage Detection\\week4_outputs\\checkpoints\\best_model.pt"
+}

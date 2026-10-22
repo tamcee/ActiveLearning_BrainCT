@@ -1,0 +1,2 @@
+class,volume_count,slice_count,pixel_count,pixel_fraction,high_risk_low_dice
+1,23,181,301856,0.056037869968364344,True
