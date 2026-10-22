@@ -32,7 +32,6 @@ ENV/
 *.tmp
 *.temp
 *.swp
-*.swo
 
 # Environment and secrets
 .env
