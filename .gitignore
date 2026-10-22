@@ -1,1 +1,8 @@
 Dataset
+__pycache__/
+__pycache__
+*.pyc
+checkpoints
+*.pth
+*.pt
+tensorboard
