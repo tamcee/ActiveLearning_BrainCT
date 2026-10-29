@@ -1,0 +1,28 @@
+# Paths are relative to repository root unless absolute paths are supplied.
+dataset:
+  format: nifti
+  image_dir: data/train/images
+  mask_dir: data/train/masks
+  validation_fraction: 0.20
+  seed: 42
+  expected_shape_hw: [512, 512]
+  num_classes: 6
+  class_names: [Background, Label_1, Label_2, Label_3, Label_4, Label_5]
+  image_suffix: ".nii.gz"
+  # For the 2.5D pipeline, each slice contributes 3 HU-window channels.
+  windows:
+    - {name: brain, level: 40, width: 80}
+    - {name: subdural, level: 75, width: 215}
+    - {name: bone, level: 400, width: 1800}
+  neighbors: 3
+  # null uses every slice. Set e.g. 2 to cap sampled negative slices
+  # at 2x the number of positive slices in each training study.
+  train_negative_ratio: 2.0
+  cache_size: 2
+
+# Keep the AL pool physically separate from train/val.
+active_learning:
+  pool_image_dir: data/al_pool/images
+  pool_mask_dir: data/al_pool/masks
+  # Masks are used only AFTER selection to simulate annotation.
+  labels_available_for_simulation: true

@@ -1,0 +1,16 @@
+training:
+  seed: 42
+  epochs: 35
+  batch_size: 8
+  num_workers: 4
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  dice_weight: 1.0
+  scheduler: cosine
+  amp: true
+  pin_memory: true
+  train_negative_ratio: 2.0
+  output_dir: experiments/baseline
+  checkpoint_dir: experiments/baseline/checkpoints
+  log_dir: experiments/baseline/tensorboard
+  resume: null

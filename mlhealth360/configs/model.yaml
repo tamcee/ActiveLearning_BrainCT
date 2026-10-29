@@ -1,0 +1,8 @@
+model:
+  name: UNet25D
+  in_channels: 9
+  num_classes: 6
+  base_channels: 16
+  dropout_p: 0.2
+  input_height: 512
+  input_width: 512
