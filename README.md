@@ -117,7 +117,13 @@ To prevent patient data leakage across multi-scan subjects (such as patient `ID_
 - **Imbalance-Aware Objective:** Combined Focal Cross-Entropy and Per-Slice Foreground Focal Tversky Loss ($\alpha=0.7, \beta=0.3, \gamma=1.5$). Resolves the zero-Dice class collapse on extreme minority classes (EDH).
 - **Uncertainty Readiness:** Integrated ASPP decoder dropout ($p \ge 0.2$) with an `enable_mc_dropout()` hook for epistemic scoring.
 
-### 3. nnU-Net v2 Active Learning Pipeline
+### 3. DeepLabV3+ Active Learning Pipeline
+- **Notebook:** [`AL(DeepLab)_pipeline.ipynb`](./AL(DeepLab)_pipeline.ipynb)
+- **Checkpoint:** Loads the Phase 2 ResNet-34 DeepLabV3+ model with 9-channel multi-window CT input, six output classes, and active decoder dropout.
+- **Uncertainty Scoring:** Uses 10-pass Monte Carlo Dropout inference with frozen BatchNorm statistics to compute predictive entropy, BALD, and epistemic variance over predicted foreground regions.
+- **Stratified Selection & Retraining:** Applies HU, lesion-area, entropy, and per-study diversity gates; selects slices across three uncertainty bands and fine-tunes with a buffer-preserved training set at a low learning rate.
+
+### 4. nnU-Net v2 Active Learning Pipeline
 - **Notebook:** [`nnunet_al_pipeline.ipynb`](./nnunet_al_pipeline.ipynb)
 - **Dataset Assembly (`Dataset502_BrainCTICH_AL`):** Incorporates the nnU-Net ignore label (`ignore: 6`) protocol. Full 3D CT volumes are ingested by nnU-Net, but unrevealed pool slices are masked with label 6 so they contribute zero gradient to training, allowing precise slice-level active learning inside a full-volume framework.
 - **Custom Trainer (`nnUNetTrainerDropout`):** [`nnunet_trainers_variants/nnUNetTrainerDropout.py`](./nnunet_trainers_variants/nnUNetTrainerDropout.py) integrates active decoder dropout ($p \ge 0.2$) into nnU-Net v2 with startup runtime verification assertions.
