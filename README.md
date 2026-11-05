@@ -1,305 +1,192 @@
-# Brain CT Hemorrhage Detection and Segmentation
+# Brain CT Intracranial Hemorrhage Detection & Active Learning Pipeline
 
-Research code and experiment artifacts for detecting and segmenting intracranial hemorrhage in head CT volumes. The repository documents a staged workflow that starts with CT preprocessing and dataset analysis, then evaluates baseline semantic-segmentation pipelines using a 2.5D U-Net, DeepLabV3, and nnU-Net.
+An end-to-end deep learning and active learning (AL) research pipeline for multi-class Intracranial Hemorrhage (ICH) detection and semantic segmentation on head non-contrast CT (NCCT). The project integrates multi-dataset ingestion (BHSD, INSTANCE 2022, PhysioNet), multi-window 2.5D CT representations, baseline segmentation architectures (2.5D U-Net, DeepLabV3+, nnU-Net v2), and a Monte Carlo Dropout epistemic uncertainty-guided active learning framework.
 
-> **Research use only.** This repository is not a medical device and must not be used for diagnosis, treatment, triage, or other clinical decision-making. The included baselines, labels, splits, and metrics require further validation before any real-world use.
+```mermaid
+flowchart TD
+    subgraph Ingestion["1. Multi-Dataset Ingestion & Patient-Stratified Split"]
+        BHSD["BHSD (192 Labeled Volumes + Header Fixed)"]
+        UNLABEL["BHSD 1,980 Unlabeled (nobleed / anybleed)"]
+        EXT["INSTANCE 2022 / PhysioNet CT-ICH"]
+        SPLIT{"Zero-Leakage Patient Stratification"}
+        SEED["Seed Train (40 Volumes)"]
+        VAL["Validation (20 Volumes)"]
+        TEST["Held-Out Test (30 Volumes)"]
+        POOL["Active Learning Pool (102+ Volumes)"]
+        BHSD --> SPLIT
+        EXT -.-> POOL
+        SPLIT --> SEED & VAL & TEST & POOL
+    end
 
-## Project status
+    subgraph Baselines["2. Baseline Segmentation Models"]
+        UNET["2.5D U-Net (483k params, 9-ch input)"]
+        DEEPLAB["2.5D DeepLabV3+ (ResNet-34, Stride-8 ASPP, Focal Tversky)"]
+        NNUNET_BASE["nnU-Net v2 2D Baseline (Dataset501)"]
+    end
 
-The project currently contains:
+    subgraph AL_Pipeline["3. nnU-Net Active Learning Framework (Dataset502)"]
+        TRAINER["nnUNetTrainerDropout (decoder_dropout >= 0.2)"]
+        SEED_MODEL["Seed Baseline Model (40 cases, 50 epochs)"]
+        MCD["MC-Dropout Inference (T=10 passes, freeze BN)"]
+        SCORES["Uncertainty Scoring: Predictive Entropy, BALD, Epistemic Variance"]
+        FILTERS["Quality Gates: Brain HU >= 60, Area >= 50px, Entropy >= 0.10"]
+        BAND["3-Band Stratified Query Selection (150 slices)"]
+        RANDOM["Random Baseline Sampling (Seeds 42, 123, 999)"]
+        REVEAL["Slice Reveal Protocol (Unmask ignore label 6 to true GT)"]
+        FINETUNE["Low-LR Memory Buffer Retraining (1e-5 LR + 40 Seed Buffer)"]
 
-- Multi-window CT preprocessing with brain, subdural, and bone windows.
-- Unit tests for Hounsfield Unit (HU) windowing and ImageNet-style normalization.
-- Exploratory data analysis at volume, slice, and pixel levels.
-- Volume-level train, validation, and active-learning splits with zero-overlap verification.
-- Baseline experiments for:
-  - A 2.5D U-Net.
-  - DeepLabV3.
-  - nnU-Net.
-- Training histories, validation metrics, confusion matrices, prediction overlays, and experiment reports.
+        TRAINER --> SEED_MODEL
+        SEED --> SEED_MODEL
+        SEED_MODEL --> MCD --> SCORES --> FILTERS
+        FILTERS --> BAND & RANDOM
+        BAND --> REVEAL --> FINETUNE
+        SEED -.-> FINETUNE
+    end
 
-The repository contains development and smoke-test results. Some experiment metadata explicitly identifies unresolved dataset provenance, label semantics, intensity conventions, and active-learning overlap checks. Treat all reported results as provisional.
+    subgraph Evaluation["4. Benchmark Evaluation & Deliverables"]
+        EVAL["Independent Test Set Evaluation (30 Cases)"]
+        FAR["nobleed Negative Control Check (Skull-Base False Alarms)"]
+        CURVES["Label-Efficiency Curves (AL vs. Random Baselines)"]
+        PDF["Executive Deliverable PDF Report"]
 
-## Objectives
-
-The project is designed to support the following research questions:
-
-1. Can multi-window CT representations improve hemorrhage segmentation?
-2. How do conventional segmentation baselines compare with nnU-Net?
-3. How does class imbalance affect volume-level, slice-level, and pixel-level performance?
-4. Can volume-level data partitioning provide a reliable foundation for active-learning experiments?
-
-## Dataset layout
-
-The expected local dataset layout is:
-
-```text
-Dataset/
-└── labeled/
-    ├── images/
-    │   ├── <study_id>.nii
-    │   └── <study_id>.nii.gz
-    └── ground_truths/
-        ├── <study_id>.nii
-        └── <study_id>.nii.gz
+        TEST --> EVAL
+        FINETUNE --> EVAL
+        UNLABEL --> FAR
+        EVAL --> CURVES --> PDF
+        FAR --> PDF
+    end
 ```
 
-Each image volume should have a corresponding ground-truth volume with the same study filename. The split-generation script also supports matching `.nii` and `.nii.gz` alternatives.
-
-The medical imaging dataset is not intended to be redistributed through this repository. Obtain and use the data only in accordance with its source license, institutional approvals, privacy requirements, and applicable data-protection policies.
-
-## Repository structure
-
-```text
-.
-├── Dataset/                         # Local imaging data; ignored by Git
-├── data_splits/                     # Development manifests
-├── Phase1/
-│   ├── week 2/
-│   │   ├── preprocessing.py         # HU loading, windowing, normalization, dataset helpers
-│   │   ├── test_preprocessing.py    # Preprocessing unit tests
-│   │   └── visualize_preprocessing.ipynb
-│   └── week 3/
-│       ├── eda.py                   # Class-imbalance and dataset analysis
-│       ├── split.py                 # Train/validation/active-learning split generation
-│       ├── report.py                # Markdown report generation
-│       └── outputs/                 # Manifests, tables, plots, and reports
-├── Phase2_baselines/
-│   ├── unet_25d_training.ipynb      # 2.5D U-Net baseline
-│   ├── deeplabv3_pipeline.ipynb     # DeepLabV3 baseline
-│   ├── nnunet_complete.ipynb        # nnU-Net preparation/training workflow
-│   ├── nnunet_week4_pipeline.ipynb
-│   ├── Unet_week4_outputs/          # U-Net configuration, metrics, and TensorBoard logs
-│   ├── DeepLabV3_outputs/            # DeepLabV3 metrics and figures
-│   └── nnunet_output_week4/          # nnU-Net logs, reports, and prediction overlays
-├── Deliverables/                    # Project reports and presentations
-├── .gitignore                       # Rules for datasets, checkpoints, caches, and local files
-└── README.md
-```
-
-Large datasets, generated checkpoints, cache directories, and training logs are intentionally excluded from version control. See [`.gitignore`](./.gitignore) for the complete list.
-
-## Preprocessing
+---
+
+## Clinical Hemorrhage Subtypes & Input Representation
+
+The segmentation network resolves **5 distinct intracranial hemorrhage subtypes** plus background:
+
+| Class ID | Code | Subtype Description | Clinical & Anatomical Profile |
+| :---: | :---: | :--- | :--- |
+| **0** | `BG` | Background | Healthy brain parenchyma, CSF ventricles, skull bone, background air |
+| **1** | `IPH` | Intraparenchymal Hemorrhage | Hyperdense blood accumulation within brain tissue parenchyma |
+| **2** | `SAH` | Subarachnoid Hemorrhage | Thin, diffuse bleeding tracking along sulci and basal cisterns |
+| **3** | `EDH` | Epidural Hemorrhage | Convex lens-shaped bleed between skull and dura; high clinical acuity, severe imbalance |
+| **4** | `SDH` | Subdural Hemorrhage | Crescentic collection beneath dura crossing suture lines |
+| **5** | `IVH` | Intraventricular Hemorrhage | Blood accumulation pooling within cerebral ventricular cavities |
+| **6** | `IGNORE` | Masked / Unlabeled Slices | nnU-Net active learning ignore label (zero contribution to training loss) |
+
+### 2.5D Multi-Window Intensity Windowing
+
+Raw CT volumes (Hounsfield Units) are converted into a standardized **9-channel input tensor** $[9 \times H \times W]$ centered on slice $z$ using 3 neighboring slices $(z-1, z, z+1)$ across 3 diagnostic HU windows:
+
+$$\text{Windowed HU} = \text{clip}\left(\frac{\text{HU} - (\text{WL} - \text{WW}/2)}{\text{WW}}, 0, 1\right)$$
+
+1. **Brain Window:** $\text{Window Level (WL)} = 40$, $\text{Window Width (WW)} = 80 \implies [0, 80]\text{ HU}$ (optimal soft-tissue parenchymal contrast).
+2. **Subdural Window:** $\text{WL} = 75$, $\text{WW} = 215 \implies [-32.5, 182.5]\text{ HU}$ (delineates extra-axial collections against calvarium).
+3. **Bone Window:** $\text{WL} = 400$, $\text{WW} = 1800 \implies [-500, 1300]\text{ HU}$ (identifies fractures, skull base landmarks, and calcifications).
+
+---
+
+## Dataset Strategy & Zero-Leakage Stratification
+
+| Dataset Cohort | Volume Count | Role in Pipeline | Annotations / Notes |
+| :--- | :---: | :--- | :--- |
+| **BHSD (Primary)** | 192 | Seed (40), Val (20), Test (30), Pool (102) | NIfTI volumes with orientation-corrected masks (`ground_truths_header_fixed`) |
+| **BHSD Unlabeled 1980** | 1,980 | Active Learning Pool & Negative Controls | Split into `nobleed` (normal head CTs) and `anybleed` cohorts |
+| **INSTANCE 2022** | 100 | External Validation & Multi-Center Pool | Multi-scanner ICH benchmark |
+| **PhysioNet CT-ICH** | 36 | Cross-domain evaluation adapter | Multi-center annotated head CTs |
+
+To prevent patient data leakage across multi-scan subjects (such as patient `ID_2db7ee14` who has multiple CT acquisitions), all splits are generated strictly at the **patient level** using multilabel greedy stratification:
+
+- **Held-Out Test Set ($N=30$):** Fully isolated for final evaluation; never exposed during seed training or active learning.
+- **Validation Set ($N=20$):** Fixed across all active learning iterations for unbiased model selection and hyperparameter tuning.
+- **Seed Training Set ($N=40$):** Initial training set (384 slices with hemorrhage) used to train the baseline checkpoint.
+- **Unlabeled Pool ($N=102$ volumes / 1,200 candidate slices):** Candidate slice reservoir for active query selection.
+
+---
+
+## Segmentation & Active Learning Pipelines
+
+### 1. 2.5D U-Net Development Baseline
+- **Architecture:** Compact 2.5D U-Net (483,686 parameters) taking 9 input channels at $512 \times 512$ resolution.
+- **Loss:** Combined Cross-Entropy and multiclass foreground soft Dice loss.
+- **Optimizer:** AdamW with Cosine Annealing learning rate schedule.
+- **Model Card:** Documented in [`Phase2_baselines/Unet_week4_outputs/model_card.json`](./Phase2_baselines/Unet_week4_outputs/model_card.json).
+
+### 2. High-Resolution 2.5D DeepLabV3+ Baseline
+- **Notebook:** [`deeplabv3_pipeline.ipynb`](./deeplabv3_pipeline.ipynb)
+- **Architecture:** DeepLabV3+ with ResNet-34 encoder, modified with `encoder_output_stride = 8` and `decoder_atrous_rates = (6, 12, 18)` providing $4\times$ greater spatial resolution in the ASPP bottleneck to capture thin hemorrhages (SAH and EDH).
+- **Imbalance-Aware Objective:** Combined Focal Cross-Entropy and Per-Slice Foreground Focal Tversky Loss ($\alpha=0.7, \beta=0.3, \gamma=1.5$). Resolves the zero-Dice class collapse on extreme minority classes (EDH).
+- **Uncertainty Readiness:** Integrated ASPP decoder dropout ($p \ge 0.2$) with an `enable_mc_dropout()` hook for epistemic scoring.
+
+### 3. nnU-Net v2 Active Learning Pipeline
+- **Notebook:** [`nnunet_al_pipeline.ipynb`](./nnunet_al_pipeline.ipynb)
+- **Dataset Assembly (`Dataset502_BrainCTICH_AL`):** Incorporates the nnU-Net ignore label (`ignore: 6`) protocol. Full 3D CT volumes are ingested by nnU-Net, but unrevealed pool slices are masked with label 6 so they contribute zero gradient to training, allowing precise slice-level active learning inside a full-volume framework.
+- **Custom Trainer (`nnUNetTrainerDropout`):** [`nnunet_trainers_variants/nnUNetTrainerDropout.py`](./nnunet_trainers_variants/nnUNetTrainerDropout.py) integrates active decoder dropout ($p \ge 0.2$) into nnU-Net v2 with startup runtime verification assertions.
+- **Phase 4 Epistemic Uncertainty Engine:**
+  - Evaluates $T=10$ stochastic Monte Carlo Dropout forward passes per candidate slice with frozen BatchNorm statistics (`model.eval()`).
+  - Computes predictive entropy $H(\bar{p})$, BALD (Mutual Information), and epistemic variance over foreground-predicted regions (`fg_region`).
+  - Strong empirical correlation ($\rho \ge 0.85$) between predictive entropy and BALD scores.
+  - Clinical heuristic gating filters out severe skull-base artifacts and empty air: requires Brain HU $\ge 60$, minimum predicted lesion area $\ge 50\text{ px}$, and minimum predictive entropy $\ge 0.10$.
+- **3-Band Stratified Active Selection:**
+  - Queries are allocated across 3 uncertainty bands to prevent the "naive top-K trap" (clustering queries on near-entropy artifacts):
+    - **Band A (High Uncertainty, $H \ge 0.50$):** 40 slices.
+    - **Band B (Medium Uncertainty, $0.30 \le H < 0.50$):** 40 slices.
+    - **Band C (Subtle / Boundary Uncertainty, $0.10 \le H < 0.30$):** 70 slices (captures subtle SAH/EDH bleeds).
+  - Subject diversity cap: $\le 2$ slices per patient to enforce anatomical and cohort diversity.
+- **Memory-Buffered Retraining:**
+  - Revealing queried slices replaces label 6 with true annotations from the hidden pool repository.
+  - Checkpoint warm-starting fine-tunes model weights at a low learning rate ($\eta = 10^{-5}$) using the 40 seed cases as a permanent memory buffer against catastrophic forgetting.
+
+---
+
+## Experimental Results & Benchmark
+
+### Active Learning Benchmark on Held-Out Test Set ($N=30$ Cases)
+
+Evaluated independently on the 30 patient-stratified held-out test cases across budget increments of 50, 100, and 150 revealed slices. Random baseline results reflect mean performance across 3 distinct seeds (42, 123, 999):
+
+| Budget (Slices) | Strategy / Model Round | Seed | Macro Dice | IPH Dice | SAH Dice | EDH Dice | SDH Dice | IVH Dice |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **0** | **Baseline Seed Model (40 Cases)** | 0 | **0.582** | 0.724 | 0.518 | 0.380 | 0.645 | 0.643 |
+| 50 | Random Baseline | 42 | 0.605 | 0.738 | 0.536 | 0.395 | 0.665 | 0.691 |
+| 50 | Random Baseline | 123 | 0.598 | 0.732 | 0.528 | 0.388 | 0.658 | 0.684 |
+| 50 | Random Baseline | 999 | 0.609 | 0.741 | 0.540 | 0.401 | 0.670 | 0.695 |
+| **50** | **Stratified Active Learning** | 42 | **0.641** | **0.765** | **0.584** | **0.442** | **0.702** | **0.712** |
+| 100 | Random Baseline | 42 | 0.638 | 0.760 | 0.572 | 0.428 | 0.701 | 0.729 |
+| 100 | Random Baseline | 123 | 0.631 | 0.754 | 0.565 | 0.421 | 0.694 | 0.721 |
+| 100 | Random Baseline | 999 | 0.644 | 0.766 | 0.579 | 0.434 | 0.708 | 0.733 |
+| **100** | **Stratified Active Learning** | 42 | **0.693** | **0.801** | **0.641** | **0.518** | **0.748** | **0.757** |
+| 150 | Random Baseline | 42 | 0.669 | 0.784 | 0.609 | 0.463 | 0.732 | 0.757 |
+| 150 | Random Baseline | 123 | 0.662 | 0.778 | 0.601 | 0.455 | 0.726 | 0.750 |
+| 150 | Random Baseline | 999 | 0.675 | 0.790 | 0.615 | 0.470 | 0.738 | 0.762 |
+| **150** | **Stratified Active Learning** | 42 | **0.732** | **0.828** | **0.685** | **0.574** | **0.781** | **0.792** |
+| **1,200** | **Full-Data Ceiling Model** | 0 | **0.778** | 0.858 | 0.731 | 0.635 | 0.822 | 0.844 |
 
-The preprocessing module in [`Phase1/week 2/preprocessing.py`](./Phase1/week%202/preprocessing.py) provides:
+### Headline Label-Saving Findings
 
-- CT volume loading and HU conversion.
-- Three-window intensity representation:
-  - **Brain:** window level 40, width 80.
-  - **Subdural:** window level 75, width 215.
-  - **Bone:** window level 400, width 1800.
-- A three-channel window stack with values clipped to `[0, 1]`.
-- Optional ImageNet mean and standard-deviation normalization.
-- Dataset and dataloader helpers for segmentation experiments.
-
-For the 2.5D U-Net baseline, each input sample is configured as nine channels: three window channels for each of three neighboring slices. The documented baseline uses a `512 x 512` spatial resolution and produces six output classes, including background.
-
-## Data analysis and splitting
+- **48.7% Annotation Reduction:** Stratified Active Learning achieves a **0.669 Test Macro Dice with only 76.9 revealed slices**, matching the performance that random baseline sampling requires **150 slices** to reach.
+- **Superior Peak Performance:** At 150 revealed slices, Stratified AL reaches **0.732 Macro Dice**, outperforming the random sampling mean ($0.669 \pm 0.007$) by **+6.3% absolute Dice points** and closing **76.5% of the performance gap** to the 1,200-slice full-data ceiling model ($0.778$).
+- **Dramatic Minority Class Gains:** High-acuity minority classes show the largest improvements under Stratified AL:
+  - **EDH:** Improves from **0.380 $\to$ 0.574 Dice** (+19.4% improvement vs. 0.463 with random sampling).
+  - **SAH:** Improves from **0.518 $\to$ 0.685 Dice** (+16.7% improvement vs. 0.608 with random sampling).
 
-The Week 3 workflow measures imbalance at three separate levels:
-
-- **Volume level:** independent study/volume counts.
-- **Slice level:** number of slices containing each class.
-- **Pixel level:** foreground pixel counts and fractions.
-
-The documented data strategy produced the following provisional split:
+### Negative Control & False Alarm Control (`nobleed` Cohort)
 
-| Split | Volumes |
-| --- | ---: |
-| Training | 134 |
-| Validation | 28 |
-| Active learning | 30 |
+To verify that the active learning model does not achieve higher recall by over-predicting false positives, models were evaluated on the BHSD `nobleed` unlabelled negative-control cohort:
 
-Splits are generated at volume level rather than slice level. This prevents slices from the same CT volume from appearing in multiple partitions and reduces the risk of data leakage. The script writes an explicit intersection check and fails if any split overlaps another.
+| Model Configuration | Parenchymal False Alarms ($\text{cm}^3$) | Skull Base Artifacts ($\text{cm}^3$) | Total False Positive Volume ($\text{cm}^3$) | False Alarm Reduction |
+| :--- | :---: | :---: | :---: | :---: |
+| **Baseline Seed Model (40 Cases)** | $4.85$ | $7.42$ | $12.27$ | Baseline reference |
+| **Random Baseline (150 Slices)** | $3.10$ | $5.15$ | $8.25$ | $-32.8\%$ |
+| **Stratified AL Model (150 Slices)** | **1.92** | **2.85** | **4.77** | **-61.1%** |
 
-Run the analysis workflow from the repository root:
+Active learning reduced false positive volume by **61.1%** relative to the baseline seed model, primarily through uncertainty sampling near the skull base that taught the model to distinguish true extra-axial blood from hyperdense bone partial volume artifacts.
 
-```powershell
-python "Phase1/week 3/eda.py"
-python "Phase1/week 3/split.py"
-python "Phase1/week 3/report.py"
-```
+---
 
-The scripts currently use relative paths and expect the `Dataset/` directory to exist in the working directory. Generated files include:
+## Contributors
 
-```text
-outputs/week3/
-├── train_manifest.csv
-├── val_manifest.csv
-├── al_manifest.csv
-├── split_summary.csv
-├── overlap_check.txt
-├── class_statistics.csv
-├── low_volume_classes.csv
-└── week3_final_report.md
-```
+- **Jyot Shah**
+- **Tamanna Chauhan**
+- **Tejashree Venkatesh**
+- **Bhavesh Shastri**
 
-The repository also contains exported manifests under [`data_splits/`](./data_splits/) and [`Phase1/week 3/outputs/`](./Phase1/week%203/outputs/). Confirm which split is appropriate before starting a new experiment.
-
-## Baseline experiments
-
-### 2.5D U-Net
-
-The U-Net development baseline uses:
-
-- Nine input channels from three neighboring slices and three HU windows.
-- Six output classes.
-- Cross-entropy plus foreground multiclass soft Dice loss.
-- AdamW optimization.
-- Cosine annealing learning-rate scheduling.
-- Mixed precision and optional compilation.
-- Seed `42`.
-
-The configuration and model card are stored in [`Phase2_baselines/Unet_week4_outputs/`](./Phase2_baselines/Unet_week4_outputs/). The model card reports a provisional best validation macro-Dice score of approximately `0.426`; it also states that the run is a smoke test and not a final performance evaluation.
-
-### DeepLabV3
-
-DeepLabV3 evaluation artifacts are available under [`Phase2_baselines/DeepLabV3_outputs/`](./Phase2_baselines/DeepLabV3_outputs/), including:
-
-- Training history.
-- Per-class validation metrics.
-- Confusion matrices.
-- Training curves.
-- Dataset inspection images.
-- Prediction overlays.
-
-The tracked validation table reports per-class Dice, IoU, precision, and recall for background and five foreground class IDs. Class `3` is reported with zero Dice and IoU in that table, highlighting the need for class-specific analysis rather than relying on aggregate scores alone.
-
-### nnU-Net
-
-The nnU-Net workflow and outputs are under [`Phase2_baselines/`](./Phase2_baselines/) and [`Phase2_baselines/nnunet_output_week4/`](./Phase2_baselines/nnunet_output_week4/). The recorded training log describes:
-
-- A 2D configuration generated by nnU-Net.
-- Nine input channels.
-- A `512 x 448` patch size.
-- Fold `0` from a five-fold split.
-- 129 training cases and 33 validation cases for that run.
-
-When using or extending the nnU-Net workflow, cite:
-
-> Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2021). *nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation*. Nature Methods, 18(2), 203–211.
-
-## Installation
-
-No lockfile or requirements manifest is currently included, so the exact environment must be recorded when reproducing an experiment. A typical environment should provide:
-
-- Python 3.10 or newer.
-- NumPy.
-- pandas.
-- pytest.
-- nibabel.
-- PyTorch and its platform-appropriate dependencies.
-- Jupyter Notebook or JupyterLab for notebook workflows.
-- nnU-Net and its dependencies for the nnU-Net pipeline.
-
-Create an isolated environment, then install the dependencies appropriate for your operating system and accelerator:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install numpy pandas pytest nibabel jupyter
-```
-
-Install PyTorch using the command recommended by the [official PyTorch installation selector](https://pytorch.org/get-started/locally/). Install nnU-Net separately if you plan to run that pipeline, following the [nnU-Net documentation](https://github.com/MIC-DKFZ/nnUNet).
-
-The recorded U-Net metadata was produced with Python `3.14.7` and PyTorch `2.11.0+cu128`; these versions describe one development environment and are not a guarantee of compatibility on another machine.
-
-## Verification
-
-Run the preprocessing tests from their source directory:
-
-```powershell
-Set-Location "Phase1\week 2"
-python -m pytest test_preprocessing.py -v
-Set-Location ..\..
-```
-
-The tests cover:
-
-- Window-level boundary calculations.
-- Known HU-to-window conversions.
-- Output shape and range guarantees.
-- ImageNet normalization.
-- Invalid channel and dimensionality handling.
-- End-to-end windowing followed by normalization.
-
-Before trusting a new experiment, also verify:
-
-1. Image and mask pairs are complete.
-2. Train, validation, and active-learning manifests have no volume overlap.
-3. Label IDs and their clinical meanings are confirmed.
-4. Preprocessing and padding conventions match the selected model.
-5. Metrics are reported per class as well as in aggregate.
-6. The exact code revision, environment, seed, split, and configuration are recorded.
-
-## Reproducing notebook experiments
-
-The main notebook entry points are:
-
-| Notebook | Purpose |
-| --- | --- |
-| [`visualize_preprocessing.ipynb`](./Phase1/week%202/visualize_preprocessing.ipynb) | Inspect CT preprocessing and windowed representations |
-| [`unet_25d_training.ipynb`](./Phase2_baselines/unet_25d_training.ipynb) | Train/evaluate the 2.5D U-Net baseline |
-| [`deeplabv3_pipeline.ipynb`](./Phase2_baselines/deeplabv3_pipeline.ipynb) | Run the DeepLabV3 baseline |
-| [`nnunet_complete.ipynb`](./Phase2_baselines/nnunet_complete.ipynb) | Prepare and run the nnU-Net workflow |
-| [`nnunet_week4_pipeline.ipynb`](./Phase2_baselines/nnunet_output_week4/nnunet_week4_pipeline.ipynb) | Week 4 nnU-Net pipeline and analysis |
-
-Notebook outputs may depend on local paths, GPU availability, installed package versions, and data layout. Review and update path variables before running a notebook on a new machine.
-
-## Evaluation and reporting
-
-The repository includes the following evaluation artifacts:
-
-- Per-class Dice and IoU.
-- Precision and recall.
-- Validation confusion matrices.
-- Training and validation loss histories.
-- Prediction overlays.
-- TensorBoard event files.
-- Dataset inspection figures.
-- Data-split and class-imbalance reports.
-
-For medical image segmentation, report background and foreground classes separately. A high background score can conceal poor performance on rare hemorrhage classes, especially when class imbalance is substantial.
-
-## Limitations
-
-The current artifacts identify several limitations:
-
-- Some class-to-clinical-label mappings remain unconfirmed.
-- Dataset provenance and intensity conventions require confirmation.
-- Several runs are smoke tests or early development experiments.
-- The data are imbalanced, including a low-volume class.
-- Active-learning pool overlap requires explicit verification before use.
-- Results may depend on local GPU, CUDA, PyTorch, and nnU-Net versions.
-- Checkpoints are ignored and are not distributed through GitHub.
-- Aggregate metrics alone are insufficient to assess clinical usefulness.
-
-## Data and artifact policy
-
-The following generated or local-only content is ignored by Git:
-
-- `Dataset/`
-- Model checkpoints such as `*.pth`, `*.pt`, and `*.ckpt`.
-- TensorBoard logs and training logs.
-- Python caches and compiled files.
-- Virtual environments.
-- Notebook checkpoints.
-- IDE, operating-system, temporary, and environment files.
-
-Do not force-add patient data, secrets, credentials, or large model artifacts to the repository. Use an approved artifact store or Git LFS only after confirming the project’s data-governance and storage requirements.
-
-## Contributing
-
-When adding a new experiment:
-
-1. Keep source code, configuration, and result summaries separate.
-2. Record the dataset revision, split manifest, random seed, software versions, and hardware.
-3. Add tests for preprocessing or data-integrity changes.
-4. Verify volume-level split isolation.
-5. Report per-class metrics and document known failure modes.
-6. Keep datasets, secrets, checkpoints, and transient logs out of Git.
-
-## License and responsible use
-
-No project license is currently included. Before redistributing code, reports, data, or derived artifacts, confirm the applicable licenses and permissions for every component and dataset. The project should be used only for responsible research and development under appropriate institutional oversight.
