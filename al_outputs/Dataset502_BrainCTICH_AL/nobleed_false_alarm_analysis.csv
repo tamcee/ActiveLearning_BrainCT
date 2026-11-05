@@ -1,0 +1,4 @@
+Model,Parenchymal_FAR_cm3,SkullBase_FAR_cm3,Total_FP_cm3
+Baseline Seed Model (40 cases),4.85,7.42,12.27
+Model_v2 (Stratified AL 150),1.92,2.85,4.77
+Model_v2 (Random Baseline 150),3.1,5.15,8.25

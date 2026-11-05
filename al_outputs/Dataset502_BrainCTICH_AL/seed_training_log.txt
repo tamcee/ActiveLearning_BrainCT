@@ -1,0 +1,1250 @@
+
+############################
+INFO: You are using the old nnU-Net default plans. We have updated our recommendations. Please consider using those instead! Read more here: https://github.com/MIC-DKFZ/nnUNet/blob/master/documentation/resenc_presets.md
+############################
+
+Using device: cuda:0
+
+#######################################################################
+Please cite the following paper when using nnU-Net:
+Isensee, F., Jaeger, P. F., Kohl, S. A., Petersen, J., & Maier-Hein, K. H. (2021). nnU-Net: a self-configuring method for deep learning-based biomedical image segmentation. Nature methods, 18(2), 203-211.
+#######################################################################
+
+[nnUNetTrainerDropout] Startup assertion PASSED: 6 Dropout layers active (p>=0.2).
+2026-10-29 22:11:10.003537: do_dummy_2d_data_aug: False
+2026-10-29 22:11:10.008049: Using splits from existing split file: c:\Users\whate\Documents\Brain CT Hemorrage Detection\nnUNet\nnUNet_preprocessed\Dataset502_BrainCTICH_AL\splits_final.json
+2026-10-29 22:11:10.018165: The split file contains 1 splits.
+2026-10-29 22:11:10.026044: Desired fold for training: 0
+2026-10-29 22:11:10.032663: This split has 112 training and 20 validation cases.
+
+This is the configuration used by this training:
+Configuration name: 2d
+ {'data_identifier': 'nnUNetPlans_2d', 'preprocessor_name': 'DefaultPreprocessor', 'batch_size': 14, 'patch_size': [512, 448], 'median_image_size_in_voxels': [483.0, 439.5], 'spacing': [0.4882810115814209, 0.4882810115814209], 'normalization_schemes': ['CTNormalization', 'CTNormalization', 'CTNormalization', 'CTNormalization', 'CTNormalization', 'CTNormalization', 'CTNormalization', 'CTNormalization', 'CTNormalization'], 'use_mask_for_norm': [False, False, False, False, False, False, False, False, False], 'resampling_fn_data': 'resample_data_or_seg_to_shape', 'resampling_fn_seg': 'resample_data_or_seg_to_shape', 'resampling_fn_data_kwargs': {'is_seg': False, 'order': 3, 'order_z': 0, 'force_separate_z': None}, 'resampling_fn_seg_kwargs': {'is_seg': True, 'order': 1, 'order_z': 0, 'force_separate_z': None}, 'resampling_fn_probabilities': 'resample_data_or_seg_to_shape', 'resampling_fn_probabilities_kwargs': {'is_seg': False, 'order': 1, 'order_z': 0, 'force_separate_z': None}, 'architecture': {'network_class_name': 'dynamic_network_architectures.architectures.unet.PlainConvUNet', 'arch_kwargs': {'n_stages': 7, 'features_per_stage': [32, 64, 128, 256, 512, 512, 512], 'conv_op': 'torch.nn.modules.conv.Conv2d', 'kernel_sizes': [[3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3], [3, 3]], 'strides': [[1, 1], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2]], 'n_conv_per_stage': [2, 2, 2, 2, 2, 2, 2], 'n_conv_per_stage_decoder': [2, 2, 2, 2, 2, 2], 'conv_bias': True, 'norm_op': 'torch.nn.modules.instancenorm.InstanceNorm2d', 'norm_op_kwargs': {'eps': 1e-05, 'affine': True}, 'dropout_op': None, 'dropout_op_kwargs': None, 'nonlin': 'torch.nn.LeakyReLU', 'nonlin_kwargs': {'inplace': True}}, '_kw_requires_import': ['conv_op', 'norm_op', 'dropout_op', 'nonlin']}, 'batch_dice': True, 'ignore_label': 6} 
+
+These are the global plan.json settings:
+ {'dataset_name': 'Dataset502_BrainCTICH_AL', 'plans_name': 'nnUNetPlans', 'original_median_spacing_after_transp': [5.043071746826172, 0.4882810115814209, 0.4882810115814209], 'original_median_shape_after_transp': [32, 484, 441], 'image_reader_writer': 'SimpleITKIO', 'transpose_forward': [0, 1, 2], 'transpose_backward': [0, 1, 2], 'experiment_planner_used': 'ExperimentPlanner', 'label_manager': 'LabelManager', 'foreground_intensity_properties_per_channel': {'0': {'max': 65535.0, 'mean': 35415.2421875, 'median': 32768.0, 'min': 0.0, 'percentile_00_5': 0.0, 'percentile_99_5': 65535.0, 'std': 14622.685546875}, '1': {'max': 65535.0, 'mean': 24243.05859375, 'median': 22099.0, 'min': 0.0, 'percentile_00_5': 8992.0, 'percentile_99_5': 65535.0, 'std': 9525.515625}, '2': {'max': 65535.0, 'mean': 20154.513671875, 'median': 19660.0, 'min': 0.0, 'percentile_00_5': 18095.0, 'percentile_99_5': 40705.0, 'std': 2907.5830078125}, '3': {'max': 65535.0, 'mean': 38493.66796875, 'median': 38502.0, 'min': 0.0, 'percentile_00_5': 9011.0, 'percentile_99_5': 65535.0, 'std': 11878.3955078125}, '4': {'max': 65535.0, 'mean': 24277.498046875, 'median': 24233.0, 'min': 0.0, 'percentile_00_5': 13259.0, 'percentile_99_5': 36425.0, 'std': 4628.88720703125}, '5': {'max': 63387.0, 'mean': 19924.291015625, 'median': 19915.0, 'min': 0.0, 'percentile_00_5': 18605.0, 'percentile_99_5': 21372.0, 'std': 663.919189453125}, '6': {'max': 65535.0, 'mean': 35648.21875, 'median': 33587.0, 'min': 0.0, 'percentile_00_5': 0.0, 'percentile_99_5': 65535.0, 'std': 15486.154296875}, '7': {'max': 65535.0, 'mean': 24998.44140625, 'median': 22404.0, 'min': 0.0, 'percentile_00_5': 9906.0, 'percentile_99_5': 65535.0, 'std': 11303.826171875}, '8': {'max': 65535.0, 'mean': 20796.048828125, 'median': 19697.0, 'min': 0.0, 'percentile_00_5': 18204.0, 'percentile_99_5': 57234.0, 'std': 5367.453125}}} 
+
+2026-10-29 22:11:11.256974: Unable to plot network architecture:
+2026-10-29 22:11:11.266831: No module named 'hiddenlayer'
+2026-10-29 22:11:11.342984: 
+2026-10-29 22:11:11.353070: Epoch 0
+2026-10-29 22:11:11.363346: Current learning rate: 0.01
+  [Epoch 0] Step 25/250 (10%) - Loss: 0.0914 (0.17 step/s)
+  [Epoch 0] Step 50/250 (20%) - Loss: 0.0269 (0.25 step/s)
+  [Epoch 0] Step 75/250 (30%) - Loss: 0.0689 (0.30 step/s)
+  [Epoch 0] Step 100/250 (40%) - Loss: 0.0509 (0.33 step/s)
+  [Epoch 0] Step 125/250 (50%) - Loss: 0.0569 (0.36 step/s)
+  [Epoch 0] Step 150/250 (60%) - Loss: 0.0384 (0.37 step/s)
+  [Epoch 0] Step 175/250 (70%) - Loss: 0.0284 (0.39 step/s)
+  [Epoch 0] Step 200/250 (80%) - Loss: 0.0297 (0.40 step/s)
+  [Epoch 0] Step 225/250 (90%) - Loss: 0.0254 (0.41 step/s)
+  [Epoch 0] Step 250/250 (100%) - Loss: 0.0177 (0.41 step/s)
+  [Epoch 0 Val] Step 10/50...
+  [Epoch 0 Val] Step 20/50...
+  [Epoch 0 Val] Step 30/50...
+  [Epoch 0 Val] Step 40/50...
+  [Epoch 0 Val] Step 50/50...
+2026-10-29 22:22:04.241825: train_loss 0.1399
+2026-10-29 22:22:04.257119: val_loss 0.0385
+2026-10-29 22:22:04.265568: Pseudo dice [np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0)]
+2026-10-29 22:22:04.273781: Epoch time: 652.9 s
+2026-10-29 22:22:07.751547: Yayy! New best EMA pseudo Dice: 0.0
+2026-10-29 22:22:10.031491: 
+2026-10-29 22:22:10.042735: Epoch 1
+2026-10-29 22:22:10.050986: Current learning rate: 0.00982
+  [Epoch 1] Step 25/250 (10%) - Loss: 0.0011 (0.42 step/s)
+  [Epoch 1] Step 50/250 (20%) - Loss: 0.0042 (0.44 step/s)
+  [Epoch 1] Step 75/250 (30%) - Loss: -0.0385 (0.43 step/s)
+  [Epoch 1] Step 100/250 (40%) - Loss: -0.0160 (0.45 step/s)
+  [Epoch 1] Step 125/250 (50%) - Loss: -0.0072 (0.46 step/s)
+  [Epoch 1] Step 150/250 (60%) - Loss: -0.0444 (0.45 step/s)
+  [Epoch 1] Step 175/250 (70%) - Loss: -0.0640 (0.45 step/s)
+  [Epoch 1] Step 200/250 (80%) - Loss: -0.0344 (0.46 step/s)
+  [Epoch 1] Step 225/250 (90%) - Loss: -0.0346 (0.46 step/s)
+  [Epoch 1] Step 250/250 (100%) - Loss: 0.0146 (0.46 step/s)
+  [Epoch 1 Val] Step 10/50...
+  [Epoch 1 Val] Step 20/50...
+  [Epoch 1 Val] Step 30/50...
+  [Epoch 1 Val] Step 40/50...
+  [Epoch 1 Val] Step 50/50...
+2026-10-29 22:32:05.083138: train_loss -0.0296
+2026-10-29 22:32:05.095867: val_loss -0.0127
+2026-10-29 22:32:05.105039: Pseudo dice [np.float32(0.3134), np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0)]
+2026-10-29 22:32:05.112672: Epoch time: 595.05 s
+2026-10-29 22:32:05.385592: Yayy! New best EMA pseudo Dice: 0.006300000008195639
+2026-10-29 22:32:07.828655: 
+2026-10-29 22:32:07.841280: Epoch 2
+2026-10-29 22:32:07.849978: Current learning rate: 0.00964
+  [Epoch 2] Step 25/250 (10%) - Loss: -0.0892 (0.50 step/s)
+  [Epoch 2] Step 50/250 (20%) - Loss: -0.1012 (0.49 step/s)
+  [Epoch 2] Step 75/250 (30%) - Loss: -0.0563 (0.49 step/s)
+  [Epoch 2] Step 100/250 (40%) - Loss: -0.0582 (0.49 step/s)
+  [Epoch 2] Step 125/250 (50%) - Loss: -0.0716 (0.49 step/s)
+  [Epoch 2] Step 150/250 (60%) - Loss: -0.1094 (0.49 step/s)
+  [Epoch 2] Step 175/250 (70%) - Loss: -0.1049 (0.49 step/s)
+  [Epoch 2] Step 200/250 (80%) - Loss: -0.0890 (0.49 step/s)
+  [Epoch 2] Step 225/250 (90%) - Loss: -0.0776 (0.49 step/s)
+  [Epoch 2] Step 250/250 (100%) - Loss: -0.1438 (0.49 step/s)
+  [Epoch 2 Val] Step 10/50...
+  [Epoch 2 Val] Step 20/50...
+  [Epoch 2 Val] Step 30/50...
+  [Epoch 2 Val] Step 40/50...
+  [Epoch 2 Val] Step 50/50...
+2026-10-29 22:41:29.230819: train_loss -0.0821
+2026-10-29 22:41:29.244169: val_loss -0.0442
+2026-10-29 22:41:29.252647: Pseudo dice [np.float32(0.4791), np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0)]
+2026-10-29 22:41:29.262096: Epoch time: 561.4 s
+2026-10-29 22:41:29.521229: Yayy! New best EMA pseudo Dice: 0.015200000256299973
+2026-10-29 22:41:31.924492: 
+2026-10-29 22:41:31.934581: Epoch 3
+2026-10-29 22:41:31.943910: Current learning rate: 0.00946
+  [Epoch 3] Step 25/250 (10%) - Loss: -0.0653 (0.47 step/s)
+  [Epoch 3] Step 50/250 (20%) - Loss: -0.0883 (0.47 step/s)
+  [Epoch 3] Step 75/250 (30%) - Loss: -0.0957 (0.49 step/s)
+  [Epoch 3] Step 100/250 (40%) - Loss: -0.1398 (0.48 step/s)
+  [Epoch 3] Step 125/250 (50%) - Loss: -0.1068 (0.49 step/s)
+  [Epoch 3] Step 150/250 (60%) - Loss: -0.1189 (0.50 step/s)
+  [Epoch 3] Step 175/250 (70%) - Loss: -0.1443 (0.51 step/s)
+  [Epoch 3] Step 200/250 (80%) - Loss: -0.1370 (0.52 step/s)
+  [Epoch 3] Step 225/250 (90%) - Loss: -0.0908 (0.52 step/s)
+  [Epoch 3] Step 250/250 (100%) - Loss: -0.1282 (0.53 step/s)
+  [Epoch 3 Val] Step 10/50...
+  [Epoch 3 Val] Step 20/50...
+  [Epoch 3 Val] Step 30/50...
+  [Epoch 3 Val] Step 40/50...
+  [Epoch 3 Val] Step 50/50...
+2026-10-29 22:50:03.284878: train_loss -0.1085
+2026-10-29 22:50:03.296416: val_loss -0.0668
+2026-10-29 22:50:03.304362: Pseudo dice [np.float32(0.5314), np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0)]
+2026-10-29 22:50:03.311095: Epoch time: 511.36 s
+2026-10-29 22:50:03.555948: Yayy! New best EMA pseudo Dice: 0.024299999698996544
+2026-10-29 22:50:05.364796: 
+2026-10-29 22:50:05.375492: Epoch 4
+2026-10-29 22:50:05.385264: Current learning rate: 0.00928
+  [Epoch 4] Step 25/250 (10%) - Loss: -0.1310 (0.55 step/s)
+  [Epoch 4] Step 50/250 (20%) - Loss: -0.1256 (0.54 step/s)
+  [Epoch 4] Step 75/250 (30%) - Loss: -0.0364 (0.56 step/s)
+  [Epoch 4] Step 100/250 (40%) - Loss: -0.1345 (0.55 step/s)
+  [Epoch 4] Step 125/250 (50%) - Loss: -0.1457 (0.56 step/s)
+  [Epoch 4] Step 150/250 (60%) - Loss: -0.1556 (0.56 step/s)
+  [Epoch 4] Step 175/250 (70%) - Loss: -0.1207 (0.56 step/s)
+  [Epoch 4] Step 200/250 (80%) - Loss: -0.1903 (0.56 step/s)
+  [Epoch 4] Step 225/250 (90%) - Loss: -0.0808 (0.56 step/s)
+  [Epoch 4] Step 250/250 (100%) - Loss: -0.1025 (0.56 step/s)
+  [Epoch 4 Val] Step 10/50...
+  [Epoch 4 Val] Step 20/50...
+  [Epoch 4 Val] Step 30/50...
+  [Epoch 4 Val] Step 40/50...
+  [Epoch 4 Val] Step 50/50...
+2026-10-29 22:58:12.400257: train_loss -0.1329
+2026-10-29 22:58:12.413343: val_loss -0.077
+2026-10-29 22:58:12.422140: Pseudo dice [np.float32(0.6152), np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0)]
+2026-10-29 22:58:12.430269: Epoch time: 487.04 s
+2026-10-29 22:58:15.343389: Yayy! New best EMA pseudo Dice: 0.03420000150799751
+2026-10-29 22:58:17.457940: 
+2026-10-29 22:58:17.469254: Epoch 5
+2026-10-29 22:58:17.478564: Current learning rate: 0.0091
+  [Epoch 5] Step 25/250 (10%) - Loss: -0.1854 (0.56 step/s)
+  [Epoch 5] Step 50/250 (20%) - Loss: -0.1313 (0.55 step/s)
+  [Epoch 5] Step 75/250 (30%) - Loss: -0.1426 (0.56 step/s)
+  [Epoch 5] Step 100/250 (40%) - Loss: -0.1747 (0.56 step/s)
+  [Epoch 5] Step 125/250 (50%) - Loss: -0.2191 (0.56 step/s)
+  [Epoch 5] Step 150/250 (60%) - Loss: -0.1523 (0.56 step/s)
+  [Epoch 5] Step 175/250 (70%) - Loss: -0.1739 (0.56 step/s)
+  [Epoch 5] Step 200/250 (80%) - Loss: -0.2111 (0.56 step/s)
+  [Epoch 5] Step 225/250 (90%) - Loss: -0.1568 (0.56 step/s)
+  [Epoch 5] Step 250/250 (100%) - Loss: -0.2059 (0.56 step/s)
+  [Epoch 5 Val] Step 10/50...
+  [Epoch 5 Val] Step 20/50...
+  [Epoch 5 Val] Step 30/50...
+  [Epoch 5 Val] Step 40/50...
+  [Epoch 5 Val] Step 50/50...
+2026-10-29 23:06:23.920521: train_loss -0.1611
+2026-10-29 23:06:23.934860: val_loss -0.1147
+2026-10-29 23:06:23.944987: Pseudo dice [np.float32(0.5747), np.float32(0.0), np.float32(0.0), np.float32(0.0), np.float32(0.0)]
+2026-10-29 23:06:23.954225: Epoch time: 486.46 s
+2026-10-29 23:06:24.203778: Yayy! New best EMA pseudo Dice: 0.04230000078678131
+2026-10-29 23:06:26.270065: 
+2026-10-29 23:06:26.281946: Epoch 6
+2026-10-29 23:06:26.291725: Current learning rate: 0.00891
+  [Epoch 6] Step 25/250 (10%) - Loss: -0.1564 (0.57 step/s)
+  [Epoch 6] Step 50/250 (20%) - Loss: -0.1280 (0.56 step/s)
+  [Epoch 6] Step 75/250 (30%) - Loss: -0.1836 (0.55 step/s)
+  [Epoch 6] Step 100/250 (40%) - Loss: -0.1574 (0.53 step/s)
+  [Epoch 6] Step 125/250 (50%) - Loss: -0.2637 (0.53 step/s)
+  [Epoch 6] Step 150/250 (60%) - Loss: -0.2342 (0.53 step/s)
+  [Epoch 6] Step 175/250 (70%) - Loss: -0.1727 (0.53 step/s)
+  [Epoch 6] Step 200/250 (80%) - Loss: -0.2045 (0.52 step/s)
+  [Epoch 6] Step 225/250 (90%) - Loss: -0.2526 (0.52 step/s)
+  [Epoch 6] Step 250/250 (100%) - Loss: -0.1553 (0.53 step/s)
+  [Epoch 6 Val] Step 10/50...
+  [Epoch 6 Val] Step 20/50...
+  [Epoch 6 Val] Step 30/50...
+  [Epoch 6 Val] Step 40/50...
+  [Epoch 6 Val] Step 50/50...
+2026-10-29 23:15:06.224005: train_loss -0.1855
+2026-10-29 23:15:06.236126: val_loss -0.1489
+2026-10-29 23:15:06.245141: Pseudo dice [np.float32(0.5905), np.float32(0.0), np.float32(0.0055), np.float32(0.0325), np.float32(0.0)]
+2026-10-29 23:15:06.251988: Epoch time: 519.96 s
+2026-10-29 23:15:06.506079: Yayy! New best EMA pseudo Dice: 0.050599999725818634
+2026-10-29 23:15:08.228650: 
+2026-10-29 23:15:08.240659: Epoch 7
+2026-10-29 23:15:08.251284: Current learning rate: 0.00873
+  [Epoch 7] Step 25/250 (10%) - Loss: -0.2738 (0.56 step/s)
+  [Epoch 7] Step 50/250 (20%) - Loss: -0.2510 (0.56 step/s)
+  [Epoch 7] Step 75/250 (30%) - Loss: -0.2858 (0.57 step/s)
+  [Epoch 7] Step 100/250 (40%) - Loss: -0.2163 (0.56 step/s)
+  [Epoch 7] Step 125/250 (50%) - Loss: -0.2610 (0.57 step/s)
+  [Epoch 7] Step 150/250 (60%) - Loss: -0.1833 (0.57 step/s)
+  [Epoch 7] Step 175/250 (70%) - Loss: -0.2400 (0.57 step/s)
+  [Epoch 7] Step 200/250 (80%) - Loss: -0.2115 (0.57 step/s)
+  [Epoch 7] Step 225/250 (90%) - Loss: -0.2063 (0.57 step/s)
+  [Epoch 7] Step 250/250 (100%) - Loss: -0.3314 (0.57 step/s)
+  [Epoch 7 Val] Step 10/50...
+  [Epoch 7 Val] Step 20/50...
+  [Epoch 7 Val] Step 30/50...
+  [Epoch 7 Val] Step 40/50...
+  [Epoch 7 Val] Step 50/50...
+2026-10-29 23:23:09.532483: train_loss -0.2112
+2026-10-29 23:23:09.542906: val_loss -0.1617
+2026-10-29 23:23:09.553869: Pseudo dice [np.float32(0.6191), np.float32(0.0), np.float32(0.105), np.float32(0.0537), np.float32(0.0)]
+2026-10-29 23:23:09.561881: Epoch time: 481.3 s
+2026-10-29 23:23:12.307491: Yayy! New best EMA pseudo Dice: 0.06109999865293503
+2026-10-29 23:23:14.238795: 
+2026-10-29 23:23:14.249854: Epoch 8
+2026-10-29 23:23:14.259683: Current learning rate: 0.00855
+  [Epoch 8] Step 25/250 (10%) - Loss: -0.2343 (0.57 step/s)
+  [Epoch 8] Step 50/250 (20%) - Loss: -0.2594 (0.56 step/s)
+  [Epoch 8] Step 75/250 (30%) - Loss: -0.3232 (0.57 step/s)
+  [Epoch 8] Step 100/250 (40%) - Loss: -0.3022 (0.57 step/s)
+  [Epoch 8] Step 125/250 (50%) - Loss: -0.1548 (0.57 step/s)
+  [Epoch 8] Step 150/250 (60%) - Loss: -0.2297 (0.57 step/s)
+  [Epoch 8] Step 175/250 (70%) - Loss: -0.2440 (0.57 step/s)
+  [Epoch 8] Step 200/250 (80%) - Loss: -0.2274 (0.57 step/s)
+  [Epoch 8] Step 225/250 (90%) - Loss: -0.2104 (0.57 step/s)
+  [Epoch 8] Step 250/250 (100%) - Loss: -0.2541 (0.57 step/s)
+  [Epoch 8 Val] Step 10/50...
+  [Epoch 8 Val] Step 20/50...
+  [Epoch 8 Val] Step 30/50...
+  [Epoch 8 Val] Step 40/50...
+  [Epoch 8 Val] Step 50/50...
+2026-10-29 23:31:08.819914: train_loss -0.2394
+2026-10-29 23:31:08.831947: val_loss -0.1901
+2026-10-29 23:31:08.840679: Pseudo dice [np.float32(0.6446), np.float32(0.0), np.float32(0.0098), np.float32(0.3063), np.float32(0.0035)]
+2026-10-29 23:31:08.847735: Epoch time: 474.58 s
+2026-10-29 23:31:09.098007: Yayy! New best EMA pseudo Dice: 0.07429999858140945
+2026-10-29 23:31:10.854509: 
+2026-10-29 23:31:10.865137: Epoch 9
+2026-10-29 23:31:10.874703: Current learning rate: 0.00836
+  [Epoch 9] Step 25/250 (10%) - Loss: -0.1980 (0.57 step/s)
+  [Epoch 9] Step 50/250 (20%) - Loss: -0.1860 (0.56 step/s)
+  [Epoch 9] Step 75/250 (30%) - Loss: -0.1826 (0.57 step/s)
+  [Epoch 9] Step 100/250 (40%) - Loss: -0.2921 (0.57 step/s)
+  [Epoch 9] Step 125/250 (50%) - Loss: -0.2852 (0.57 step/s)
+  [Epoch 9] Step 150/250 (60%) - Loss: -0.3466 (0.57 step/s)
+  [Epoch 9] Step 175/250 (70%) - Loss: -0.3306 (0.57 step/s)
+  [Epoch 9] Step 200/250 (80%) - Loss: -0.2002 (0.57 step/s)
+  [Epoch 9] Step 225/250 (90%) - Loss: -0.2659 (0.57 step/s)
+  [Epoch 9] Step 250/250 (100%) - Loss: -0.2779 (0.57 step/s)
+  [Epoch 9 Val] Step 10/50...
+  [Epoch 9 Val] Step 20/50...
+  [Epoch 9 Val] Step 30/50...
+  [Epoch 9 Val] Step 40/50...
+  [Epoch 9 Val] Step 50/50...
+2026-10-29 23:39:05.203314: train_loss -0.2674
+2026-10-29 23:39:05.215213: val_loss -0.2125
+2026-10-29 23:39:05.223756: Pseudo dice [np.float32(0.6817), np.float32(0.1925), np.float32(0.0418), np.float32(0.2935), np.float32(0.484)]
+2026-10-29 23:39:05.230800: Epoch time: 474.35 s
+2026-10-29 23:39:05.497653: Yayy! New best EMA pseudo Dice: 0.1006999984383583
+2026-10-29 23:39:07.247860: 
+2026-10-29 23:39:07.260699: Epoch 10
+2026-10-29 23:39:07.271821: Current learning rate: 0.00818
+  [Epoch 10] Step 25/250 (10%) - Loss: -0.3182 (0.57 step/s)
+  [Epoch 10] Step 50/250 (20%) - Loss: -0.3879 (0.56 step/s)
+  [Epoch 10] Step 75/250 (30%) - Loss: -0.2919 (0.57 step/s)
+  [Epoch 10] Step 100/250 (40%) - Loss: -0.3388 (0.56 step/s)
+  [Epoch 10] Step 125/250 (50%) - Loss: -0.2829 (0.56 step/s)
+  [Epoch 10] Step 150/250 (60%) - Loss: -0.3267 (0.56 step/s)
+  [Epoch 10] Step 175/250 (70%) - Loss: -0.4581 (0.56 step/s)
+  [Epoch 10] Step 200/250 (80%) - Loss: -0.2589 (0.56 step/s)
+  [Epoch 10] Step 225/250 (90%) - Loss: -0.3775 (0.56 step/s)
+  [Epoch 10] Step 250/250 (100%) - Loss: -0.3225 (0.56 step/s)
+  [Epoch 10 Val] Step 10/50...
+  [Epoch 10 Val] Step 20/50...
+  [Epoch 10 Val] Step 30/50...
+  [Epoch 10 Val] Step 40/50...
+  [Epoch 10 Val] Step 50/50...
+2026-10-29 23:47:17.739532: train_loss -0.3097
+2026-10-29 23:47:17.750833: val_loss -0.2513
+2026-10-29 23:47:17.758481: Pseudo dice [np.float32(0.6552), np.float32(0.3084), np.float32(0.0913), np.float32(0.2976), np.float32(0.4862)]
+2026-10-29 23:47:17.767576: Epoch time: 490.49 s
+2026-10-29 23:47:18.043416: Yayy! New best EMA pseudo Dice: 0.1273999959230423
+2026-10-29 23:47:22.618315: 
+2026-10-29 23:47:22.628726: Epoch 11
+2026-10-29 23:47:22.643434: Current learning rate: 0.008
+  [Epoch 11] Step 25/250 (10%) - Loss: -0.4283 (0.52 step/s)
+  [Epoch 11] Step 50/250 (20%) - Loss: -0.3574 (0.55 step/s)
+  [Epoch 11] Step 75/250 (30%) - Loss: -0.2979 (0.55 step/s)
+  [Epoch 11] Step 100/250 (40%) - Loss: -0.3605 (0.54 step/s)
+  [Epoch 11] Step 125/250 (50%) - Loss: -0.5049 (0.53 step/s)
+  [Epoch 11] Step 150/250 (60%) - Loss: -0.3033 (0.52 step/s)
+  [Epoch 11] Step 175/250 (70%) - Loss: -0.3997 (0.51 step/s)
+  [Epoch 11] Step 200/250 (80%) - Loss: -0.3777 (0.51 step/s)
+  [Epoch 11] Step 225/250 (90%) - Loss: -0.3269 (0.50 step/s)
+  [Epoch 11] Step 250/250 (100%) - Loss: -0.2887 (0.50 step/s)
+  [Epoch 11 Val] Step 10/50...
+  [Epoch 11 Val] Step 20/50...
+  [Epoch 11 Val] Step 30/50...
+  [Epoch 11 Val] Step 40/50...
+  [Epoch 11 Val] Step 50/50...
+2026-10-29 23:56:30.414296: train_loss -0.3233
+2026-10-29 23:56:30.426292: val_loss -0.2495
+2026-10-29 23:56:30.434371: Pseudo dice [np.float32(0.6051), np.float32(0.3244), np.float32(0.0695), np.float32(0.2434), np.float32(0.5048)]
+2026-10-29 23:56:30.443589: Epoch time: 547.8 s
+2026-10-29 23:56:30.700780: Yayy! New best EMA pseudo Dice: 0.14959999918937683
+2026-10-29 23:56:36.353099: 
+2026-10-29 23:56:36.363853: Epoch 12
+2026-10-29 23:56:36.371755: Current learning rate: 0.00781
+  [Epoch 12] Step 25/250 (10%) - Loss: -0.4175 (0.48 step/s)
+  [Epoch 12] Step 50/250 (20%) - Loss: -0.3827 (0.47 step/s)
+  [Epoch 12] Step 75/250 (30%) - Loss: -0.1480 (0.47 step/s)
+  [Epoch 12] Step 100/250 (40%) - Loss: -0.4310 (0.47 step/s)
+  [Epoch 12] Step 125/250 (50%) - Loss: -0.2877 (0.47 step/s)
+  [Epoch 12] Step 150/250 (60%) - Loss: -0.3745 (0.48 step/s)
+  [Epoch 12] Step 175/250 (70%) - Loss: -0.3771 (0.47 step/s)
+  [Epoch 12] Step 200/250 (80%) - Loss: -0.1693 (0.48 step/s)
+  [Epoch 12] Step 225/250 (90%) - Loss: -0.2793 (0.48 step/s)
+  [Epoch 12] Step 250/250 (100%) - Loss: -0.3497 (0.48 step/s)
+  [Epoch 12 Val] Step 10/50...
+  [Epoch 12 Val] Step 20/50...
+  [Epoch 12 Val] Step 30/50...
+  [Epoch 12 Val] Step 40/50...
+  [Epoch 12 Val] Step 50/50...
+2026-10-30 00:06:14.019240: train_loss -0.3256
+2026-10-30 00:06:14.033241: val_loss -0.2244
+2026-10-30 00:06:14.042120: Pseudo dice [np.float32(0.6872), np.float32(0.2896), np.float32(0.021), np.float32(0.232), np.float32(0.4485)]
+2026-10-30 00:06:14.050672: Epoch time: 577.67 s
+2026-10-30 00:06:14.355562: Yayy! New best EMA pseudo Dice: 0.16820000112056732
+2026-10-30 00:06:16.860940: 
+2026-10-30 00:06:16.871764: Epoch 13
+2026-10-30 00:06:16.880495: Current learning rate: 0.00763
+  [Epoch 13] Step 25/250 (10%) - Loss: -0.2127 (0.44 step/s)
+  [Epoch 13] Step 50/250 (20%) - Loss: -0.2497 (0.47 step/s)
+  [Epoch 13] Step 75/250 (30%) - Loss: -0.5410 (0.47 step/s)
+  [Epoch 13] Step 100/250 (40%) - Loss: -0.4080 (0.47 step/s)
+  [Epoch 13] Step 125/250 (50%) - Loss: -0.4557 (0.47 step/s)
+  [Epoch 13] Step 150/250 (60%) - Loss: -0.4452 (0.47 step/s)
+  [Epoch 13] Step 175/250 (70%) - Loss: -0.2762 (0.47 step/s)
+  [Epoch 13] Step 200/250 (80%) - Loss: -0.3080 (0.47 step/s)
+  [Epoch 13] Step 225/250 (90%) - Loss: -0.4086 (0.47 step/s)
+  [Epoch 13] Step 250/250 (100%) - Loss: -0.2504 (0.47 step/s)
+  [Epoch 13 Val] Step 10/50...
+  [Epoch 13 Val] Step 20/50...
+  [Epoch 13 Val] Step 30/50...
+  [Epoch 13 Val] Step 40/50...
+  [Epoch 13 Val] Step 50/50...
+2026-10-30 00:16:01.435825: train_loss -0.353
+2026-10-30 00:16:01.448291: val_loss -0.2855
+2026-10-30 00:16:01.457822: Pseudo dice [np.float32(0.7289), np.float32(0.3136), np.float32(0.0532), np.float32(0.3252), np.float32(0.5134)]
+2026-10-30 00:16:01.465648: Epoch time: 584.58 s
+2026-10-30 00:16:01.724527: Yayy! New best EMA pseudo Dice: 0.19009999930858612
+2026-10-30 00:16:04.282866: 
+2026-10-30 00:16:04.294184: Epoch 14
+2026-10-30 00:16:04.304802: Current learning rate: 0.00744
+  [Epoch 14] Step 25/250 (10%) - Loss: -0.4092 (0.48 step/s)
+  [Epoch 14] Step 50/250 (20%) - Loss: -0.3785 (0.48 step/s)
+  [Epoch 14] Step 75/250 (30%) - Loss: -0.3338 (0.48 step/s)
+  [Epoch 14] Step 100/250 (40%) - Loss: -0.3078 (0.48 step/s)
+  [Epoch 14] Step 125/250 (50%) - Loss: -0.3699 (0.47 step/s)
+  [Epoch 14] Step 150/250 (60%) - Loss: -0.4475 (0.47 step/s)
+  [Epoch 14] Step 175/250 (70%) - Loss: -0.4214 (0.48 step/s)
+  [Epoch 14] Step 200/250 (80%) - Loss: -0.3409 (0.48 step/s)
+  [Epoch 14] Step 225/250 (90%) - Loss: -0.3812 (0.48 step/s)
+  [Epoch 14] Step 250/250 (100%) - Loss: -0.4901 (0.48 step/s)
+  [Epoch 14 Val] Step 10/50...
+  [Epoch 14 Val] Step 20/50...
+  [Epoch 14 Val] Step 30/50...
+  [Epoch 14 Val] Step 40/50...
+  [Epoch 14 Val] Step 50/50...
+2026-10-30 00:25:38.353218: train_loss -0.3787
+2026-10-30 00:25:38.364690: val_loss -0.278
+2026-10-30 00:25:38.373674: Pseudo dice [np.float32(0.7233), np.float32(0.3014), np.float32(0.1236), np.float32(0.3228), np.float32(0.4979)]
+2026-10-30 00:25:38.381831: Epoch time: 574.07 s
+2026-10-30 00:25:42.002745: Yayy! New best EMA pseudo Dice: 0.21050000190734863
+2026-10-30 00:25:44.239485: 
+2026-10-30 00:25:44.249567: Epoch 15
+2026-10-30 00:25:44.259131: Current learning rate: 0.00725
+  [Epoch 15] Step 25/250 (10%) - Loss: -0.4320 (0.46 step/s)
+  [Epoch 15] Step 50/250 (20%) - Loss: -0.4198 (0.46 step/s)
+  [Epoch 15] Step 75/250 (30%) - Loss: -0.2759 (0.47 step/s)
+  [Epoch 15] Step 100/250 (40%) - Loss: -0.3757 (0.47 step/s)
+  [Epoch 15] Step 125/250 (50%) - Loss: -0.4440 (0.47 step/s)
+  [Epoch 15] Step 150/250 (60%) - Loss: -0.6142 (0.46 step/s)
+  [Epoch 15] Step 175/250 (70%) - Loss: -0.4171 (0.46 step/s)
+  [Epoch 15] Step 200/250 (80%) - Loss: -0.3663 (0.46 step/s)
+  [Epoch 15] Step 225/250 (90%) - Loss: -0.3745 (0.47 step/s)
+  [Epoch 15] Step 250/250 (100%) - Loss: -0.4141 (0.47 step/s)
+  [Epoch 15 Val] Step 10/50...
+  [Epoch 15 Val] Step 20/50...
+  [Epoch 15 Val] Step 30/50...
+  [Epoch 15 Val] Step 40/50...
+  [Epoch 15 Val] Step 50/50...
+2026-10-30 00:35:32.497044: train_loss -0.4068
+2026-10-30 00:35:32.508766: val_loss -0.289
+2026-10-30 00:35:32.517277: Pseudo dice [np.float32(0.7258), np.float32(0.3139), np.float32(0.1192), np.float32(0.2897), np.float32(0.5318)]
+2026-10-30 00:35:32.525471: Epoch time: 588.26 s
+2026-10-30 00:35:32.805694: Yayy! New best EMA pseudo Dice: 0.2290000021457672
+2026-10-30 00:35:35.346066: 
+2026-10-30 00:35:35.358993: Epoch 16
+2026-10-30 00:35:35.368504: Current learning rate: 0.00707
+  [Epoch 16] Step 25/250 (10%) - Loss: -0.3316 (0.48 step/s)
+  [Epoch 16] Step 50/250 (20%) - Loss: -0.3361 (0.47 step/s)
+  [Epoch 16] Step 75/250 (30%) - Loss: -0.3226 (0.47 step/s)
+  [Epoch 16] Step 100/250 (40%) - Loss: -0.4909 (0.46 step/s)
+  [Epoch 16] Step 125/250 (50%) - Loss: -0.3581 (0.47 step/s)
+  [Epoch 16] Step 150/250 (60%) - Loss: -0.5252 (0.46 step/s)
+  [Epoch 16] Step 175/250 (70%) - Loss: -0.4067 (0.47 step/s)
+  [Epoch 16] Step 200/250 (80%) - Loss: -0.3460 (0.46 step/s)
+  [Epoch 16] Step 225/250 (90%) - Loss: -0.4721 (0.47 step/s)
+  [Epoch 16] Step 250/250 (100%) - Loss: -0.5138 (0.46 step/s)
+  [Epoch 16 Val] Step 10/50...
+  [Epoch 16 Val] Step 20/50...
+  [Epoch 16 Val] Step 30/50...
+  [Epoch 16 Val] Step 40/50...
+  [Epoch 16 Val] Step 50/50...
+2026-10-30 00:45:25.767488: train_loss -0.4162
+2026-10-30 00:45:25.780219: val_loss -0.3105
+2026-10-30 00:45:25.789983: Pseudo dice [np.float32(0.7132), np.float32(0.347), np.float32(0.1036), np.float32(0.4066), np.float32(0.542)]
+2026-10-30 00:45:25.798614: Epoch time: 590.42 s
+2026-10-30 00:45:26.091155: Yayy! New best EMA pseudo Dice: 0.2484000027179718
+2026-10-30 00:45:28.189975: 
+2026-10-30 00:45:28.200435: Epoch 17
+2026-10-30 00:45:28.208821: Current learning rate: 0.00688
+  [Epoch 17] Step 25/250 (10%) - Loss: -0.3460 (0.47 step/s)
+  [Epoch 17] Step 50/250 (20%) - Loss: -0.3510 (0.47 step/s)
+  [Epoch 17] Step 75/250 (30%) - Loss: -0.3342 (0.47 step/s)
+  [Epoch 17] Step 100/250 (40%) - Loss: -0.4158 (0.46 step/s)
+  [Epoch 17] Step 125/250 (50%) - Loss: -0.3453 (0.46 step/s)
+  [Epoch 17] Step 150/250 (60%) - Loss: -0.4304 (0.46 step/s)
+  [Epoch 17] Step 175/250 (70%) - Loss: -0.3487 (0.46 step/s)
+  [Epoch 17] Step 200/250 (80%) - Loss: -0.4625 (0.46 step/s)
+  [Epoch 17] Step 225/250 (90%) - Loss: -0.4900 (0.46 step/s)
+  [Epoch 17] Step 250/250 (100%) - Loss: -0.5113 (0.46 step/s)
+  [Epoch 17 Val] Step 10/50...
+  [Epoch 17 Val] Step 20/50...
+  [Epoch 17 Val] Step 30/50...
+  [Epoch 17 Val] Step 40/50...
+  [Epoch 17 Val] Step 50/50...
+2026-10-30 00:55:20.717069: train_loss -0.4335
+2026-10-30 00:55:20.729520: val_loss -0.2812
+2026-10-30 00:55:20.738468: Pseudo dice [np.float32(0.6841), np.float32(0.3676), np.float32(0.1227), np.float32(0.291), np.float32(0.4663)]
+2026-10-30 00:55:20.747468: Epoch time: 592.53 s
+2026-10-30 00:55:21.010352: Yayy! New best EMA pseudo Dice: 0.2621999979019165
+2026-10-30 00:55:23.357285: 
+2026-10-30 00:55:23.369314: Epoch 18
+2026-10-30 00:55:23.379017: Current learning rate: 0.00669
+  [Epoch 18] Step 25/250 (10%) - Loss: -0.6323 (0.47 step/s)
+  [Epoch 18] Step 50/250 (20%) - Loss: -0.3626 (0.47 step/s)
+  [Epoch 18] Step 75/250 (30%) - Loss: -0.4165 (0.48 step/s)
+  [Epoch 18] Step 100/250 (40%) - Loss: -0.3362 (0.48 step/s)
+  [Epoch 18] Step 125/250 (50%) - Loss: -0.3792 (0.48 step/s)
+  [Epoch 18] Step 150/250 (60%) - Loss: -0.3716 (0.48 step/s)
+  [Epoch 18] Step 175/250 (70%) - Loss: -0.5375 (0.48 step/s)
+  [Epoch 18] Step 200/250 (80%) - Loss: -0.4483 (0.48 step/s)
+  [Epoch 18] Step 225/250 (90%) - Loss: -0.4320 (0.48 step/s)
+  [Epoch 18] Step 250/250 (100%) - Loss: -0.4060 (0.48 step/s)
+  [Epoch 18 Val] Step 10/50...
+  [Epoch 18 Val] Step 20/50...
+  [Epoch 18 Val] Step 30/50...
+  [Epoch 18 Val] Step 40/50...
+  [Epoch 18 Val] Step 50/50...
+2026-10-30 01:04:58.719973: train_loss -0.4684
+2026-10-30 01:04:58.732450: val_loss -0.2818
+2026-10-30 01:04:58.741888: Pseudo dice [np.float32(0.7366), np.float32(0.2468), np.float32(0.177), np.float32(0.2732), np.float32(0.5387)]
+2026-10-30 01:04:58.749994: Epoch time: 575.36 s
+2026-10-30 01:04:59.008126: Yayy! New best EMA pseudo Dice: 0.2754000127315521
+2026-10-30 01:05:00.898785: 
+2026-10-30 01:05:00.909503: Epoch 19
+2026-10-30 01:05:00.918773: Current learning rate: 0.0065
+  [Epoch 19] Step 25/250 (10%) - Loss: -0.3997 (0.43 step/s)
+  [Epoch 19] Step 50/250 (20%) - Loss: -0.5956 (0.46 step/s)
+  [Epoch 19] Step 75/250 (30%) - Loss: -0.5589 (0.45 step/s)
+  [Epoch 19] Step 100/250 (40%) - Loss: -0.3795 (0.45 step/s)
+  [Epoch 19] Step 125/250 (50%) - Loss: -0.3288 (0.46 step/s)
+  [Epoch 19] Step 150/250 (60%) - Loss: -0.5639 (0.47 step/s)
+  [Epoch 19] Step 175/250 (70%) - Loss: -0.4141 (0.48 step/s)
+  [Epoch 19] Step 200/250 (80%) - Loss: -0.5530 (0.49 step/s)
+  [Epoch 19] Step 225/250 (90%) - Loss: -0.5789 (0.49 step/s)
+  [Epoch 19] Step 250/250 (100%) - Loss: -0.4270 (0.50 step/s)
+  [Epoch 19 Val] Step 10/50...
+  [Epoch 19 Val] Step 20/50...
+  [Epoch 19 Val] Step 30/50...
+  [Epoch 19 Val] Step 40/50...
+  [Epoch 19 Val] Step 50/50...
+2026-10-30 01:14:10.285924: train_loss -0.463
+2026-10-30 01:14:10.296576: val_loss -0.2857
+2026-10-30 01:14:10.305701: Pseudo dice [np.float32(0.7103), np.float32(0.3523), np.float32(0.0506), np.float32(0.2735), np.float32(0.5458)]
+2026-10-30 01:14:10.315606: Epoch time: 549.39 s
+2026-10-30 01:14:10.593750: Yayy! New best EMA pseudo Dice: 0.2865000069141388
+2026-10-30 01:14:12.483794: 
+2026-10-30 01:14:12.500363: Epoch 20
+2026-10-30 01:14:12.513816: Current learning rate: 0.00631
+  [Epoch 20] Step 25/250 (10%) - Loss: -0.3708 (0.43 step/s)
+  [Epoch 20] Step 50/250 (20%) - Loss: -0.4982 (0.46 step/s)
+  [Epoch 20] Step 75/250 (30%) - Loss: -0.4726 (0.48 step/s)
+  [Epoch 20] Step 100/250 (40%) - Loss: -0.5414 (0.49 step/s)
+  [Epoch 20] Step 125/250 (50%) - Loss: -0.5396 (0.49 step/s)
+  [Epoch 20] Step 150/250 (60%) - Loss: -0.4194 (0.50 step/s)
+  [Epoch 20] Step 175/250 (70%) - Loss: -0.7329 (0.50 step/s)
+  [Epoch 20] Step 200/250 (80%) - Loss: -0.6428 (0.51 step/s)
+  [Epoch 20] Step 225/250 (90%) - Loss: -0.4220 (0.51 step/s)
+  [Epoch 20] Step 250/250 (100%) - Loss: -0.6423 (0.51 step/s)
+  [Epoch 20 Val] Step 10/50...
+  [Epoch 20 Val] Step 20/50...
+  [Epoch 20 Val] Step 30/50...
+  [Epoch 20 Val] Step 40/50...
+  [Epoch 20 Val] Step 50/50...
+2026-10-30 01:23:10.860255: train_loss -0.477
+2026-10-30 01:23:10.874750: val_loss -0.3155
+2026-10-30 01:23:10.884774: Pseudo dice [np.float32(0.7313), np.float32(0.3514), np.float32(0.1394), np.float32(0.4049), np.float32(0.5122)]
+2026-10-30 01:23:10.892910: Epoch time: 538.38 s
+2026-10-30 01:23:11.168316: Yayy! New best EMA pseudo Dice: 0.30059999227523804
+2026-10-30 01:23:13.221776: 
+2026-10-30 01:23:13.235145: Epoch 21
+2026-10-30 01:23:13.246030: Current learning rate: 0.00612
+  [Epoch 21] Step 25/250 (10%) - Loss: -0.6024 (0.51 step/s)
+  [Epoch 21] Step 50/250 (20%) - Loss: -0.5726 (0.53 step/s)
+  [Epoch 21] Step 75/250 (30%) - Loss: -0.4401 (0.53 step/s)
+  [Epoch 21] Step 100/250 (40%) - Loss: -0.6403 (0.53 step/s)
+  [Epoch 21] Step 125/250 (50%) - Loss: -0.4417 (0.53 step/s)
+  [Epoch 21] Step 150/250 (60%) - Loss: -0.4271 (0.53 step/s)
+  [Epoch 21] Step 175/250 (70%) - Loss: -0.4630 (0.54 step/s)
+  [Epoch 21] Step 200/250 (80%) - Loss: -0.3556 (0.54 step/s)
+  [Epoch 21] Step 225/250 (90%) - Loss: -0.4877 (0.54 step/s)
+  [Epoch 21] Step 250/250 (100%) - Loss: -0.4714 (0.54 step/s)
+  [Epoch 21 Val] Step 10/50...
+  [Epoch 21 Val] Step 20/50...
+  [Epoch 21 Val] Step 30/50...
+  [Epoch 21 Val] Step 40/50...
+  [Epoch 21 Val] Step 50/50...
+2026-10-30 01:31:41.564807: train_loss -0.4702
+2026-10-30 01:31:41.575056: val_loss -0.2865
+2026-10-30 01:31:41.583359: Pseudo dice [np.float32(0.7363), np.float32(0.3415), np.float32(0.0726), np.float32(0.2931), np.float32(0.5976)]
+2026-10-30 01:31:41.591129: Epoch time: 508.35 s
+2026-10-30 01:31:41.849956: Yayy! New best EMA pseudo Dice: 0.31139999628067017
+2026-10-30 01:31:46.365942: 
+2026-10-30 01:31:46.377951: Epoch 22
+2026-10-30 01:31:46.386863: Current learning rate: 0.00593
+  [Epoch 22] Step 25/250 (10%) - Loss: -0.5630 (0.51 step/s)
+  [Epoch 22] Step 50/250 (20%) - Loss: -0.6397 (0.53 step/s)
+  [Epoch 22] Step 75/250 (30%) - Loss: -0.4809 (0.53 step/s)
+  [Epoch 22] Step 100/250 (40%) - Loss: -0.3975 (0.54 step/s)
+  [Epoch 22] Step 125/250 (50%) - Loss: -0.4139 (0.54 step/s)
+  [Epoch 22] Step 150/250 (60%) - Loss: -0.5740 (0.54 step/s)
+  [Epoch 22] Step 175/250 (70%) - Loss: -0.2740 (0.54 step/s)
+  [Epoch 22] Step 200/250 (80%) - Loss: -0.4790 (0.53 step/s)
+  [Epoch 22] Step 225/250 (90%) - Loss: -0.6468 (0.53 step/s)
+  [Epoch 22] Step 250/250 (100%) - Loss: -0.4625 (0.53 step/s)
+  [Epoch 22 Val] Step 10/50...
+  [Epoch 22 Val] Step 20/50...
+  [Epoch 22 Val] Step 30/50...
+  [Epoch 22 Val] Step 40/50...
+  [Epoch 22 Val] Step 50/50...
+2026-10-30 01:40:19.881728: train_loss -0.491
+2026-10-30 01:40:19.892475: val_loss -0.3137
+2026-10-30 01:40:19.900849: Pseudo dice [np.float32(0.7313), np.float32(0.3542), np.float32(0.057), np.float32(0.377), np.float32(0.4191)]
+2026-10-30 01:40:19.909743: Epoch time: 513.52 s
+2026-10-30 01:40:20.162178: Yayy! New best EMA pseudo Dice: 0.3190000057220459
+2026-10-30 01:40:22.069644: 
+2026-10-30 01:40:22.081652: Epoch 23
+2026-10-30 01:40:22.090694: Current learning rate: 0.00574
+  [Epoch 23] Step 25/250 (10%) - Loss: -0.7387 (0.55 step/s)
+  [Epoch 23] Step 50/250 (20%) - Loss: -0.5193 (0.54 step/s)
+  [Epoch 23] Step 75/250 (30%) - Loss: -0.4882 (0.55 step/s)
+  [Epoch 23] Step 100/250 (40%) - Loss: -0.6823 (0.54 step/s)
+  [Epoch 23] Step 125/250 (50%) - Loss: -0.6073 (0.53 step/s)
+  [Epoch 23] Step 150/250 (60%) - Loss: -0.3286 (0.51 step/s)
+  [Epoch 23] Step 175/250 (70%) - Loss: -0.5382 (0.50 step/s)
+  [Epoch 23] Step 200/250 (80%) - Loss: -0.5686 (0.49 step/s)
+  [Epoch 23] Step 225/250 (90%) - Loss: -0.6492 (0.49 step/s)
+  [Epoch 23] Step 250/250 (100%) - Loss: -0.6065 (0.49 step/s)
+  [Epoch 23 Val] Step 10/50...
+  [Epoch 23 Val] Step 20/50...
+  [Epoch 23 Val] Step 30/50...
+  [Epoch 23 Val] Step 40/50...
+  [Epoch 23 Val] Step 50/50...
+2026-10-30 01:49:48.336928: train_loss -0.5148
+2026-10-30 01:49:48.350813: val_loss -0.3125
+2026-10-30 01:49:48.361616: Pseudo dice [np.float32(0.7665), np.float32(0.3422), np.float32(0.0246), np.float32(0.407), np.float32(0.5271)]
+2026-10-30 01:49:48.372563: Epoch time: 566.27 s
+2026-10-30 01:49:51.892781: Yayy! New best EMA pseudo Dice: 0.32850000262260437
+2026-10-30 01:49:54.741907: 
+2026-10-30 01:49:54.753279: Epoch 24
+2026-10-30 01:49:54.763830: Current learning rate: 0.00555
+  [Epoch 24] Step 25/250 (10%) - Loss: -0.4387 (0.43 step/s)
+  [Epoch 24] Step 50/250 (20%) - Loss: -0.6371 (0.43 step/s)
+  [Epoch 24] Step 75/250 (30%) - Loss: -0.3714 (0.44 step/s)
+  [Epoch 24] Step 100/250 (40%) - Loss: -0.5632 (0.43 step/s)
+  [Epoch 24] Step 125/250 (50%) - Loss: -0.7297 (0.43 step/s)
+  [Epoch 24] Step 150/250 (60%) - Loss: -0.4621 (0.43 step/s)
+  [Epoch 24] Step 175/250 (70%) - Loss: -0.4593 (0.43 step/s)
+  [Epoch 24] Step 200/250 (80%) - Loss: -0.6233 (0.44 step/s)
+  [Epoch 24] Step 225/250 (90%) - Loss: -0.4266 (0.44 step/s)
+  [Epoch 24] Step 250/250 (100%) - Loss: -0.4567 (0.44 step/s)
+  [Epoch 24 Val] Step 10/50...
+  [Epoch 24 Val] Step 20/50...
+  [Epoch 24 Val] Step 30/50...
+  [Epoch 24 Val] Step 40/50...
+  [Epoch 24 Val] Step 50/50...
+2026-10-30 02:00:12.455049: train_loss -0.5349
+2026-10-30 02:00:12.469093: val_loss -0.3095
+2026-10-30 02:00:12.477828: Pseudo dice [np.float32(0.7386), np.float32(0.339), np.float32(0.1373), np.float32(0.3652), np.float32(0.5217)]
+2026-10-30 02:00:12.486626: Epoch time: 617.71 s
+2026-10-30 02:00:12.800855: Yayy! New best EMA pseudo Dice: 0.3377000093460083
+2026-10-30 02:00:15.197834: 
+2026-10-30 02:00:15.211297: Epoch 25
+2026-10-30 02:00:15.222675: Current learning rate: 0.00536
+  [Epoch 25] Step 25/250 (10%) - Loss: -0.4503 (0.45 step/s)
+  [Epoch 25] Step 50/250 (20%) - Loss: -0.6156 (0.44 step/s)
+  [Epoch 25] Step 75/250 (30%) - Loss: -0.5837 (0.43 step/s)
+  [Epoch 25] Step 100/250 (40%) - Loss: -0.2919 (0.43 step/s)
+  [Epoch 25] Step 125/250 (50%) - Loss: -0.6566 (0.43 step/s)
+  [Epoch 25] Step 150/250 (60%) - Loss: -0.3892 (0.43 step/s)
+  [Epoch 25] Step 175/250 (70%) - Loss: -0.7293 (0.43 step/s)
+  [Epoch 25] Step 200/250 (80%) - Loss: -0.6665 (0.43 step/s)
+  [Epoch 25] Step 225/250 (90%) - Loss: -0.4713 (0.43 step/s)
+  [Epoch 25] Step 250/250 (100%) - Loss: -0.7334 (0.43 step/s)
+  [Epoch 25 Val] Step 10/50...
+  [Epoch 25 Val] Step 20/50...
+  [Epoch 25 Val] Step 30/50...
+  [Epoch 25 Val] Step 40/50...
+  [Epoch 25 Val] Step 50/50...
+2026-10-30 02:10:50.794553: train_loss -0.5362
+2026-10-30 02:10:50.808493: val_loss -0.331
+2026-10-30 02:10:50.817412: Pseudo dice [np.float32(0.7496), np.float32(0.3609), np.float32(0.1313), np.float32(0.4365), np.float32(0.5237)]
+2026-10-30 02:10:50.825579: Epoch time: 635.6 s
+2026-10-30 02:10:54.302366: Yayy! New best EMA pseudo Dice: 0.34790000319480896
+2026-10-30 02:10:56.666170: 
+2026-10-30 02:10:56.677763: Epoch 26
+2026-10-30 02:10:56.686753: Current learning rate: 0.00517
+  [Epoch 26] Step 25/250 (10%) - Loss: -0.5954 (0.46 step/s)
+  [Epoch 26] Step 50/250 (20%) - Loss: -0.6200 (0.47 step/s)
+  [Epoch 26] Step 75/250 (30%) - Loss: -0.6436 (0.47 step/s)
+  [Epoch 26] Step 100/250 (40%) - Loss: -0.6203 (0.46 step/s)
+  [Epoch 26] Step 125/250 (50%) - Loss: -0.5295 (0.47 step/s)
+  [Epoch 26] Step 150/250 (60%) - Loss: -0.7083 (0.46 step/s)
+  [Epoch 26] Step 175/250 (70%) - Loss: -0.4229 (0.46 step/s)
+  [Epoch 26] Step 200/250 (80%) - Loss: -0.5572 (0.46 step/s)
+  [Epoch 26] Step 225/250 (90%) - Loss: -0.5018 (0.46 step/s)
+  [Epoch 26] Step 250/250 (100%) - Loss: -0.5288 (0.46 step/s)
+  [Epoch 26 Val] Step 10/50...
+  [Epoch 26 Val] Step 20/50...
+  [Epoch 26 Val] Step 30/50...
+  [Epoch 26 Val] Step 40/50...
+  [Epoch 26 Val] Step 50/50...
+2026-10-30 02:21:01.017337: train_loss -0.5531
+2026-10-30 02:21:01.034070: val_loss -0.3048
+2026-10-30 02:21:01.045862: Pseudo dice [np.float32(0.7497), np.float32(0.3803), np.float32(0.0484), np.float32(0.3965), np.float32(0.5677)]
+2026-10-30 02:21:01.053578: Epoch time: 604.35 s
+2026-10-30 02:21:01.332276: Yayy! New best EMA pseudo Dice: 0.35600000619888306
+2026-10-30 02:21:03.329616: 
+2026-10-30 02:21:03.340762: Epoch 27
+2026-10-30 02:21:03.349562: Current learning rate: 0.00497
+  [Epoch 27] Step 25/250 (10%) - Loss: -0.5271 (0.46 step/s)
+  [Epoch 27] Step 50/250 (20%) - Loss: -0.5536 (0.45 step/s)
+  [Epoch 27] Step 75/250 (30%) - Loss: -0.3205 (0.45 step/s)
+  [Epoch 27] Step 100/250 (40%) - Loss: -0.6225 (0.44 step/s)
+  [Epoch 27] Step 125/250 (50%) - Loss: -0.5506 (0.45 step/s)
+  [Epoch 27] Step 150/250 (60%) - Loss: -0.6842 (0.44 step/s)
+  [Epoch 27] Step 175/250 (70%) - Loss: -0.5312 (0.44 step/s)
+  [Epoch 27] Step 200/250 (80%) - Loss: -0.4742 (0.45 step/s)
+  [Epoch 27] Step 225/250 (90%) - Loss: -0.3518 (0.45 step/s)
+  [Epoch 27] Step 250/250 (100%) - Loss: -0.4440 (0.45 step/s)
+  [Epoch 27 Val] Step 10/50...
+  [Epoch 27 Val] Step 20/50...
+  [Epoch 27 Val] Step 30/50...
+  [Epoch 27 Val] Step 40/50...
+  [Epoch 27 Val] Step 50/50...
+2026-10-30 02:31:16.459970: train_loss -0.5577
+2026-10-30 02:31:16.473581: val_loss -0.3529
+2026-10-30 02:31:16.481957: Pseudo dice [np.float32(0.7649), np.float32(0.3661), np.float32(0.1563), np.float32(0.4307), np.float32(0.5654)]
+2026-10-30 02:31:16.490497: Epoch time: 613.13 s
+2026-10-30 02:31:16.801229: Yayy! New best EMA pseudo Dice: 0.366100013256073
+2026-10-30 02:31:22.724175: 
+2026-10-30 02:31:22.735205: Epoch 28
+2026-10-30 02:31:22.743458: Current learning rate: 0.00478
+  [Epoch 28] Step 25/250 (10%) - Loss: -0.4761 (0.46 step/s)
+  [Epoch 28] Step 50/250 (20%) - Loss: -0.3874 (0.46 step/s)
+  [Epoch 28] Step 75/250 (30%) - Loss: -0.7718 (0.46 step/s)
+  [Epoch 28] Step 100/250 (40%) - Loss: -0.5539 (0.45 step/s)
+  [Epoch 28] Step 125/250 (50%) - Loss: -0.7039 (0.45 step/s)
+  [Epoch 28] Step 150/250 (60%) - Loss: -0.5309 (0.45 step/s)
+  [Epoch 28] Step 175/250 (70%) - Loss: -0.5695 (0.45 step/s)
+  [Epoch 28] Step 200/250 (80%) - Loss: -0.6256 (0.45 step/s)
+  [Epoch 28] Step 225/250 (90%) - Loss: -0.5548 (0.45 step/s)
+  [Epoch 28] Step 250/250 (100%) - Loss: -0.7873 (0.45 step/s)
+  [Epoch 28 Val] Step 10/50...
+  [Epoch 28 Val] Step 20/50...
+  [Epoch 28 Val] Step 30/50...
+  [Epoch 28 Val] Step 40/50...
+  [Epoch 28 Val] Step 50/50...
+2026-10-30 02:41:30.974248: train_loss -0.5658
+2026-10-30 02:41:30.988663: val_loss -0.2859
+2026-10-30 02:41:30.997749: Pseudo dice [np.float32(0.6919), np.float32(0.3247), np.float32(0.0568), np.float32(0.3324), np.float32(0.5272)]
+2026-10-30 02:41:31.007517: Epoch time: 608.25 s
+2026-10-30 02:41:31.286884: Yayy! New best EMA pseudo Dice: 0.36809998750686646
+2026-10-30 02:41:33.164917: 
+2026-10-30 02:41:33.175788: Epoch 29
+2026-10-30 02:41:33.184292: Current learning rate: 0.00458
+  [Epoch 29] Step 25/250 (10%) - Loss: -0.6150 (0.44 step/s)
+  [Epoch 29] Step 50/250 (20%) - Loss: -0.5582 (0.45 step/s)
+  [Epoch 29] Step 75/250 (30%) - Loss: -0.5045 (0.45 step/s)
+  [Epoch 29] Step 100/250 (40%) - Loss: -0.6171 (0.44 step/s)
+  [Epoch 29] Step 125/250 (50%) - Loss: -0.5521 (0.44 step/s)
+  [Epoch 29] Step 150/250 (60%) - Loss: -0.6054 (0.45 step/s)
+  [Epoch 29] Step 175/250 (70%) - Loss: -0.6207 (0.45 step/s)
+  [Epoch 29] Step 200/250 (80%) - Loss: -0.7065 (0.45 step/s)
+  [Epoch 29] Step 225/250 (90%) - Loss: -0.4941 (0.45 step/s)
+  [Epoch 29] Step 250/250 (100%) - Loss: -0.3946 (0.45 step/s)
+  [Epoch 29 Val] Step 10/50...
+  [Epoch 29 Val] Step 20/50...
+  [Epoch 29 Val] Step 30/50...
+  [Epoch 29 Val] Step 40/50...
+  [Epoch 29 Val] Step 50/50...
+2026-10-30 02:51:40.303289: train_loss -0.5688
+2026-10-30 02:51:40.316162: val_loss -0.3174
+2026-10-30 02:51:40.325425: Pseudo dice [np.float32(0.7196), np.float32(0.373), np.float32(0.0896), np.float32(0.3758), np.float32(0.5786)]
+2026-10-30 02:51:40.335666: Epoch time: 607.14 s
+2026-10-30 02:51:40.606932: Yayy! New best EMA pseudo Dice: 0.37400001287460327
+2026-10-30 02:51:42.578979: 
+2026-10-30 02:51:42.591674: Epoch 30
+2026-10-30 02:51:42.601092: Current learning rate: 0.00438
+  [Epoch 30] Step 25/250 (10%) - Loss: -0.7225 (0.43 step/s)
+  [Epoch 30] Step 50/250 (20%) - Loss: -0.5799 (0.45 step/s)
+  [Epoch 30] Step 75/250 (30%) - Loss: -0.5602 (0.45 step/s)
+  [Epoch 30] Step 100/250 (40%) - Loss: -0.6134 (0.44 step/s)
+  [Epoch 30] Step 125/250 (50%) - Loss: -0.6005 (0.44 step/s)
+  [Epoch 30] Step 150/250 (60%) - Loss: -0.5998 (0.44 step/s)
+  [Epoch 30] Step 175/250 (70%) - Loss: -0.4778 (0.44 step/s)
+  [Epoch 30] Step 200/250 (80%) - Loss: -0.6538 (0.44 step/s)
+  [Epoch 30] Step 225/250 (90%) - Loss: -0.5035 (0.44 step/s)
+  [Epoch 30] Step 250/250 (100%) - Loss: -0.6489 (0.44 step/s)
+  [Epoch 30 Val] Step 10/50...
+  [Epoch 30 Val] Step 20/50...
+  [Epoch 30 Val] Step 30/50...
+  [Epoch 30 Val] Step 40/50...
+  [Epoch 30 Val] Step 50/50...
+2026-10-30 03:01:58.735417: train_loss -0.582
+2026-10-30 03:01:58.748979: val_loss -0.3248
+2026-10-30 03:01:58.757729: Pseudo dice [np.float32(0.7361), np.float32(0.3541), np.float32(0.0457), np.float32(0.4171), np.float32(0.5688)]
+2026-10-30 03:01:58.765430: Epoch time: 616.16 s
+2026-10-30 03:01:59.052352: Yayy! New best EMA pseudo Dice: 0.3790999948978424
+2026-10-30 03:02:00.887625: 
+2026-10-30 03:02:00.901829: Epoch 31
+2026-10-30 03:02:00.913380: Current learning rate: 0.00419
+  [Epoch 31] Step 25/250 (10%) - Loss: -0.5746 (0.44 step/s)
+  [Epoch 31] Step 50/250 (20%) - Loss: -0.5698 (0.42 step/s)
+  [Epoch 31] Step 75/250 (30%) - Loss: -0.6017 (0.44 step/s)
+  [Epoch 31] Step 100/250 (40%) - Loss: -0.7536 (0.43 step/s)
+  [Epoch 31] Step 125/250 (50%) - Loss: -0.5224 (0.44 step/s)
+  [Epoch 31] Step 150/250 (60%) - Loss: -0.7495 (0.44 step/s)
+  [Epoch 31] Step 175/250 (70%) - Loss: -0.6052 (0.43 step/s)
+  [Epoch 31] Step 200/250 (80%) - Loss: -0.5488 (0.43 step/s)
+  [Epoch 31] Step 225/250 (90%) - Loss: -0.6226 (0.44 step/s)
+  [Epoch 31] Step 250/250 (100%) - Loss: -0.5304 (0.43 step/s)
+  [Epoch 31 Val] Step 10/50...
+  [Epoch 31 Val] Step 20/50...
+  [Epoch 31 Val] Step 30/50...
+  [Epoch 31 Val] Step 40/50...
+  [Epoch 31 Val] Step 50/50...
+2026-10-30 03:12:29.358925: train_loss -0.5979
+2026-10-30 03:12:29.370360: val_loss -0.2747
+2026-10-30 03:12:29.383417: Pseudo dice [np.float32(0.7037), np.float32(0.3094), np.float32(0.0), np.float32(0.3718), np.float32(0.5073)]
+2026-10-30 03:12:29.391211: Epoch time: 628.47 s
+2026-10-30 03:12:35.177047: 
+2026-10-30 03:12:35.187912: Epoch 32
+2026-10-30 03:12:35.197180: Current learning rate: 0.00399
+  [Epoch 32] Step 25/250 (10%) - Loss: -0.4823 (0.43 step/s)
+  [Epoch 32] Step 50/250 (20%) - Loss: -0.5112 (0.44 step/s)
+  [Epoch 32] Step 75/250 (30%) - Loss: -0.7551 (0.44 step/s)
+  [Epoch 32] Step 100/250 (40%) - Loss: -0.6057 (0.43 step/s)
+  [Epoch 32] Step 125/250 (50%) - Loss: -0.5605 (0.43 step/s)
+  [Epoch 32] Step 150/250 (60%) - Loss: -0.5854 (0.44 step/s)
+  [Epoch 32] Step 175/250 (70%) - Loss: -0.4259 (0.44 step/s)
+  [Epoch 32] Step 200/250 (80%) - Loss: -0.5735 (0.44 step/s)
+  [Epoch 32] Step 225/250 (90%) - Loss: -0.7454 (0.44 step/s)
+  [Epoch 32] Step 250/250 (100%) - Loss: -0.5362 (0.44 step/s)
+  [Epoch 32 Val] Step 10/50...
+  [Epoch 32 Val] Step 20/50...
+  [Epoch 32 Val] Step 30/50...
+  [Epoch 32 Val] Step 40/50...
+  [Epoch 32 Val] Step 50/50...
+2026-10-30 03:22:54.647683: train_loss -0.5835
+2026-10-30 03:22:54.662022: val_loss -0.3252
+2026-10-30 03:22:54.673501: Pseudo dice [np.float32(0.7045), np.float32(0.3706), np.float32(0.0818), np.float32(0.4592), np.float32(0.5256)]
+2026-10-30 03:22:54.681130: Epoch time: 619.47 s
+2026-10-30 03:22:58.276853: Yayy! New best EMA pseudo Dice: 0.383899986743927
+2026-10-30 03:23:00.558961: 
+2026-10-30 03:23:00.576741: Epoch 33
+2026-10-30 03:23:00.586859: Current learning rate: 0.00379
+  [Epoch 33] Step 25/250 (10%) - Loss: -0.7335 (0.42 step/s)
+  [Epoch 33] Step 50/250 (20%) - Loss: -0.5036 (0.44 step/s)
+  [Epoch 33] Step 75/250 (30%) - Loss: -0.4503 (0.45 step/s)
+  [Epoch 33] Step 100/250 (40%) - Loss: -0.5845 (0.45 step/s)
+  [Epoch 33] Step 125/250 (50%) - Loss: -0.3197 (0.44 step/s)
+  [Epoch 33] Step 150/250 (60%) - Loss: -0.5869 (0.44 step/s)
+  [Epoch 33] Step 175/250 (70%) - Loss: -0.6923 (0.44 step/s)
+  [Epoch 33] Step 200/250 (80%) - Loss: -0.5123 (0.44 step/s)
+  [Epoch 33] Step 225/250 (90%) - Loss: -0.6497 (0.44 step/s)
+  [Epoch 33] Step 250/250 (100%) - Loss: -0.5211 (0.44 step/s)
+  [Epoch 33 Val] Step 10/50...
+  [Epoch 33 Val] Step 20/50...
+  [Epoch 33 Val] Step 30/50...
+  [Epoch 33 Val] Step 40/50...
+  [Epoch 33 Val] Step 50/50...
+2026-10-30 03:33:23.721574: train_loss -0.581
+2026-10-30 03:33:23.735878: val_loss -0.3185
+2026-10-30 03:33:23.748673: Pseudo dice [np.float32(0.7547), np.float32(0.3273), np.float32(0.0556), np.float32(0.4), np.float32(0.6038)]
+2026-10-30 03:33:23.756794: Epoch time: 623.16 s
+2026-10-30 03:33:24.042663: Yayy! New best EMA pseudo Dice: 0.38839998841285706
+2026-10-30 03:33:29.709475: 
+2026-10-30 03:33:29.721895: Epoch 34
+2026-10-30 03:33:29.730848: Current learning rate: 0.00359
+  [Epoch 34] Step 25/250 (10%) - Loss: -0.5198 (0.42 step/s)
+  [Epoch 34] Step 50/250 (20%) - Loss: -0.3704 (0.43 step/s)
+  [Epoch 34] Step 75/250 (30%) - Loss: -0.5698 (0.43 step/s)
+  [Epoch 34] Step 100/250 (40%) - Loss: -0.5346 (0.44 step/s)
+  [Epoch 34] Step 125/250 (50%) - Loss: -0.6620 (0.44 step/s)
+  [Epoch 34] Step 150/250 (60%) - Loss: -0.6305 (0.44 step/s)
+  [Epoch 34] Step 175/250 (70%) - Loss: -0.6624 (0.44 step/s)
+  [Epoch 34] Step 200/250 (80%) - Loss: -0.5710 (0.43 step/s)
+  [Epoch 34] Step 225/250 (90%) - Loss: -0.7726 (0.43 step/s)
+  [Epoch 34] Step 250/250 (100%) - Loss: -0.7267 (0.44 step/s)
+  [Epoch 34 Val] Step 10/50...
+  [Epoch 34 Val] Step 20/50...
+  [Epoch 34 Val] Step 30/50...
+  [Epoch 34 Val] Step 40/50...
+  [Epoch 34 Val] Step 50/50...
+2026-10-30 03:43:58.636525: train_loss -0.6001
+2026-10-30 03:43:58.649359: val_loss -0.3213
+2026-10-30 03:43:58.657583: Pseudo dice [np.float32(0.7716), np.float32(0.3363), np.float32(0.0319), np.float32(0.4317), np.float32(0.6019)]
+2026-10-30 03:43:58.665763: Epoch time: 628.93 s
+2026-10-30 03:43:58.953508: Yayy! New best EMA pseudo Dice: 0.3930000066757202
+2026-10-30 03:44:00.760763: 
+2026-10-30 03:44:00.772182: Epoch 35
+2026-10-30 03:44:00.780709: Current learning rate: 0.00338
+  [Epoch 35] Step 25/250 (10%) - Loss: -0.6958 (0.46 step/s)
+  [Epoch 35] Step 50/250 (20%) - Loss: -0.7003 (0.45 step/s)
+  [Epoch 35] Step 75/250 (30%) - Loss: -0.6366 (0.44 step/s)
+  [Epoch 35] Step 100/250 (40%) - Loss: -0.6829 (0.45 step/s)
+  [Epoch 35] Step 125/250 (50%) - Loss: -0.5852 (0.45 step/s)
+  [Epoch 35] Step 150/250 (60%) - Loss: -0.5227 (0.44 step/s)
+  [Epoch 35] Step 175/250 (70%) - Loss: -0.5895 (0.44 step/s)
+  [Epoch 35] Step 200/250 (80%) - Loss: -0.7136 (0.44 step/s)
+  [Epoch 35] Step 225/250 (90%) - Loss: -0.7059 (0.44 step/s)
+  [Epoch 35] Step 250/250 (100%) - Loss: -0.7203 (0.44 step/s)
+  [Epoch 35 Val] Step 10/50...
+  [Epoch 35 Val] Step 20/50...
+  [Epoch 35 Val] Step 30/50...
+  [Epoch 35 Val] Step 40/50...
+  [Epoch 35 Val] Step 50/50...
+2026-10-30 03:54:23.005759: train_loss -0.5991
+2026-10-30 03:54:23.017113: val_loss -0.3656
+2026-10-30 03:54:23.027449: Pseudo dice [np.float32(0.7655), np.float32(0.3798), np.float32(0.1245), np.float32(0.4315), np.float32(0.5927)]
+2026-10-30 03:54:23.036391: Epoch time: 622.25 s
+2026-10-30 03:54:23.316231: Yayy! New best EMA pseudo Dice: 0.39959999918937683
+2026-10-30 03:54:29.280310: 
+2026-10-30 03:54:29.291137: Epoch 36
+2026-10-30 03:54:29.300386: Current learning rate: 0.00318
+  [Epoch 36] Step 25/250 (10%) - Loss: -0.5310 (0.42 step/s)
+  [Epoch 36] Step 50/250 (20%) - Loss: -0.5883 (0.42 step/s)
+  [Epoch 36] Step 75/250 (30%) - Loss: -0.6280 (0.43 step/s)
+  [Epoch 36] Step 100/250 (40%) - Loss: -0.7135 (0.43 step/s)
+  [Epoch 36] Step 125/250 (50%) - Loss: -0.7325 (0.43 step/s)
+  [Epoch 36] Step 150/250 (60%) - Loss: -0.6820 (0.43 step/s)
+  [Epoch 36] Step 175/250 (70%) - Loss: -0.5126 (0.44 step/s)
+  [Epoch 36] Step 200/250 (80%) - Loss: -0.5623 (0.43 step/s)
+  [Epoch 36] Step 225/250 (90%) - Loss: -0.5205 (0.43 step/s)
+  [Epoch 36] Step 250/250 (100%) - Loss: -0.6325 (0.43 step/s)
+  [Epoch 36 Val] Step 10/50...
+  [Epoch 36 Val] Step 20/50...
+  [Epoch 36 Val] Step 30/50...
+  [Epoch 36 Val] Step 40/50...
+  [Epoch 36 Val] Step 50/50...
+2026-10-30 04:05:02.684822: train_loss -0.6099
+2026-10-30 04:05:02.703872: val_loss -0.3335
+2026-10-30 04:05:02.714123: Pseudo dice [np.float32(0.8134), np.float32(0.3137), np.float32(0.059), np.float32(0.3785), np.float32(0.6442)]
+2026-10-30 04:05:02.722279: Epoch time: 633.41 s
+2026-10-30 04:05:06.326427: Yayy! New best EMA pseudo Dice: 0.40380001068115234
+2026-10-30 04:05:08.540846: 
+2026-10-30 04:05:08.552358: Epoch 37
+2026-10-30 04:05:08.563705: Current learning rate: 0.00297
+  [Epoch 37] Step 25/250 (10%) - Loss: -0.4319 (0.47 step/s)
+  [Epoch 37] Step 50/250 (20%) - Loss: -0.6300 (0.42 step/s)
+  [Epoch 37] Step 75/250 (30%) - Loss: -0.5347 (0.43 step/s)
+  [Epoch 37] Step 100/250 (40%) - Loss: -0.5646 (0.42 step/s)
+  [Epoch 37] Step 125/250 (50%) - Loss: -0.6344 (0.42 step/s)
+  [Epoch 37] Step 150/250 (60%) - Loss: -0.7105 (0.42 step/s)
+  [Epoch 37] Step 175/250 (70%) - Loss: -0.6034 (0.43 step/s)
+  [Epoch 37] Step 200/250 (80%) - Loss: -0.5673 (0.43 step/s)
+  [Epoch 37] Step 225/250 (90%) - Loss: -0.6599 (0.43 step/s)
+  [Epoch 37] Step 250/250 (100%) - Loss: -0.5723 (0.42 step/s)
+  [Epoch 37 Val] Step 10/50...
+  [Epoch 37 Val] Step 20/50...
+  [Epoch 37 Val] Step 30/50...
+  [Epoch 37 Val] Step 40/50...
+  [Epoch 37 Val] Step 50/50...
+2026-10-30 04:15:54.259807: train_loss -0.6108
+2026-10-30 04:15:54.272321: val_loss -0.3523
+2026-10-30 04:15:54.280507: Pseudo dice [np.float32(0.7178), np.float32(0.3894), np.float32(0.0983), np.float32(0.4404), np.float32(0.6303)]
+2026-10-30 04:15:54.288455: Epoch time: 645.72 s
+2026-10-30 04:15:58.055336: Yayy! New best EMA pseudo Dice: 0.4088999927043915
+2026-10-30 04:16:00.421868: 
+2026-10-30 04:16:00.436667: Epoch 38
+2026-10-30 04:16:00.446808: Current learning rate: 0.00277
+  [Epoch 38] Step 25/250 (10%) - Loss: -0.6038 (0.40 step/s)
+  [Epoch 38] Step 50/250 (20%) - Loss: -0.5742 (0.42 step/s)
+  [Epoch 38] Step 75/250 (30%) - Loss: -0.6719 (0.42 step/s)
+  [Epoch 38] Step 100/250 (40%) - Loss: -0.6543 (0.42 step/s)
+  [Epoch 38] Step 125/250 (50%) - Loss: -0.7576 (0.42 step/s)
+  [Epoch 38] Step 150/250 (60%) - Loss: -0.4888 (0.42 step/s)
+  [Epoch 38] Step 175/250 (70%) - Loss: -0.5426 (0.42 step/s)
+  [Epoch 38] Step 200/250 (80%) - Loss: -0.7039 (0.43 step/s)
+  [Epoch 38] Step 225/250 (90%) - Loss: -0.6695 (0.43 step/s)
+  [Epoch 38] Step 250/250 (100%) - Loss: -0.7278 (0.43 step/s)
+  [Epoch 38 Val] Step 10/50...
+  [Epoch 38 Val] Step 20/50...
+  [Epoch 38 Val] Step 30/50...
+  [Epoch 38 Val] Step 40/50...
+  [Epoch 38 Val] Step 50/50...
+2026-10-30 04:26:41.043854: train_loss -0.623
+2026-10-30 04:26:41.060242: val_loss -0.3442
+2026-10-30 04:26:41.071422: Pseudo dice [np.float32(0.7687), np.float32(0.3827), np.float32(0.1359), np.float32(0.3362), np.float32(0.6545)]
+2026-10-30 04:26:41.079986: Epoch time: 640.62 s
+2026-10-30 04:26:44.676591: Yayy! New best EMA pseudo Dice: 0.41359999775886536
+2026-10-30 04:26:47.228925: 
+2026-10-30 04:26:47.240409: Epoch 39
+2026-10-30 04:26:47.253690: Current learning rate: 0.00256
+  [Epoch 39] Step 25/250 (10%) - Loss: -0.5716 (0.46 step/s)
+  [Epoch 39] Step 50/250 (20%) - Loss: -0.5456 (0.47 step/s)
+  [Epoch 39] Step 75/250 (30%) - Loss: -0.6286 (0.46 step/s)
+  [Epoch 39] Step 100/250 (40%) - Loss: -0.4486 (0.45 step/s)
+  [Epoch 39] Step 125/250 (50%) - Loss: -0.5913 (0.46 step/s)
+  [Epoch 39] Step 150/250 (60%) - Loss: -0.6915 (0.45 step/s)
+  [Epoch 39] Step 175/250 (70%) - Loss: -0.6803 (0.45 step/s)
+  [Epoch 39] Step 200/250 (80%) - Loss: -0.7580 (0.44 step/s)
+  [Epoch 39] Step 225/250 (90%) - Loss: -0.7055 (0.44 step/s)
+  [Epoch 39] Step 250/250 (100%) - Loss: -0.7492 (0.44 step/s)
+  [Epoch 39 Val] Step 10/50...
+  [Epoch 39 Val] Step 20/50...
+  [Epoch 39 Val] Step 30/50...
+  [Epoch 39 Val] Step 40/50...
+  [Epoch 39 Val] Step 50/50...
+2026-10-30 04:37:10.513848: train_loss -0.6212
+2026-10-30 04:37:10.533929: val_loss -0.3408
+2026-10-30 04:37:10.550775: Pseudo dice [np.float32(0.7451), np.float32(0.3777), np.float32(0.1415), np.float32(0.3905), np.float32(0.6212)]
+2026-10-30 04:37:10.559945: Epoch time: 623.29 s
+2026-10-30 04:37:10.857211: Yayy! New best EMA pseudo Dice: 0.41780000925064087
+2026-10-30 04:37:16.666473: 
+2026-10-30 04:37:16.677340: Epoch 40
+2026-10-30 04:37:16.686027: Current learning rate: 0.00235
+  [Epoch 40] Step 25/250 (10%) - Loss: -0.6010 (0.43 step/s)
+  [Epoch 40] Step 50/250 (20%) - Loss: -0.5890 (0.42 step/s)
+  [Epoch 40] Step 75/250 (30%) - Loss: -0.5830 (0.42 step/s)
+  [Epoch 40] Step 100/250 (40%) - Loss: -0.6134 (0.42 step/s)
+  [Epoch 40] Step 125/250 (50%) - Loss: -0.3246 (0.43 step/s)
+  [Epoch 40] Step 150/250 (60%) - Loss: -0.7398 (0.43 step/s)
+  [Epoch 40] Step 175/250 (70%) - Loss: -0.4907 (0.43 step/s)
+  [Epoch 40] Step 200/250 (80%) - Loss: -0.7311 (0.42 step/s)
+  [Epoch 40] Step 225/250 (90%) - Loss: -0.6128 (0.42 step/s)
+  [Epoch 40] Step 250/250 (100%) - Loss: -0.4040 (0.43 step/s)
+  [Epoch 40 Val] Step 10/50...
+  [Epoch 40 Val] Step 20/50...
+  [Epoch 40 Val] Step 30/50...
+  [Epoch 40 Val] Step 40/50...
+  [Epoch 40 Val] Step 50/50...
+2026-10-30 04:47:44.606915: train_loss -0.6296
+2026-10-30 04:47:44.621676: val_loss -0.3585
+2026-10-30 04:47:44.631043: Pseudo dice [np.float32(0.7511), np.float32(0.3729), np.float32(0.0572), np.float32(0.5055), np.float32(0.6132)]
+2026-10-30 04:47:44.638651: Epoch time: 627.94 s
+2026-10-30 04:47:44.928808: Yayy! New best EMA pseudo Dice: 0.421999990940094
+2026-10-30 04:47:46.675457: 
+2026-10-30 04:47:46.689273: Epoch 41
+2026-10-30 04:47:46.698049: Current learning rate: 0.00214
+  [Epoch 41] Step 25/250 (10%) - Loss: -0.5408 (0.48 step/s)
+  [Epoch 41] Step 50/250 (20%) - Loss: -0.7436 (0.51 step/s)
+  [Epoch 41] Step 75/250 (30%) - Loss: -0.6528 (0.52 step/s)
+  [Epoch 41] Step 100/250 (40%) - Loss: -0.5327 (0.52 step/s)
+  [Epoch 41] Step 125/250 (50%) - Loss: -0.5639 (0.51 step/s)
+  [Epoch 41] Step 150/250 (60%) - Loss: -0.7306 (0.52 step/s)
+  [Epoch 41] Step 175/250 (70%) - Loss: -0.4832 (0.52 step/s)
+  [Epoch 41] Step 200/250 (80%) - Loss: -0.6070 (0.52 step/s)
+  [Epoch 41] Step 225/250 (90%) - Loss: -0.5180 (0.52 step/s)
+  [Epoch 41] Step 250/250 (100%) - Loss: -0.5762 (0.52 step/s)
+  [Epoch 41 Val] Step 10/50...
+  [Epoch 41 Val] Step 20/50...
+  [Epoch 41 Val] Step 30/50...
+  [Epoch 41 Val] Step 40/50...
+  [Epoch 41 Val] Step 50/50...
+2026-10-30 04:56:29.188931: train_loss -0.6405
+2026-10-30 04:56:29.202960: val_loss -0.3606
+2026-10-30 04:56:29.212517: Pseudo dice [np.float32(0.7396), np.float32(0.363), np.float32(0.0778), np.float32(0.4971), np.float32(0.6529)]
+2026-10-30 04:56:29.220109: Epoch time: 522.51 s
+2026-10-30 04:56:29.507260: Yayy! New best EMA pseudo Dice: 0.42640000581741333
+2026-10-30 04:56:34.388741: 
+2026-10-30 04:56:34.402817: Epoch 42
+2026-10-30 04:56:34.415856: Current learning rate: 0.00192
+  [Epoch 42] Step 25/250 (10%) - Loss: -0.5028 (0.54 step/s)
+  [Epoch 42] Step 50/250 (20%) - Loss: -0.6867 (0.54 step/s)
+  [Epoch 42] Step 75/250 (30%) - Loss: -0.6803 (0.53 step/s)
+  [Epoch 42] Step 100/250 (40%) - Loss: -0.5075 (0.53 step/s)
+  [Epoch 42] Step 125/250 (50%) - Loss: -0.6205 (0.53 step/s)
+  [Epoch 42] Step 150/250 (60%) - Loss: -0.5881 (0.53 step/s)
+  [Epoch 42] Step 175/250 (70%) - Loss: -0.6415 (0.53 step/s)
+  [Epoch 42] Step 200/250 (80%) - Loss: -0.7200 (0.53 step/s)
+  [Epoch 42] Step 225/250 (90%) - Loss: -0.4329 (0.53 step/s)
+  [Epoch 42] Step 250/250 (100%) - Loss: -0.7852 (0.53 step/s)
+  [Epoch 42 Val] Step 10/50...
+  [Epoch 42 Val] Step 20/50...
+  [Epoch 42 Val] Step 30/50...
+  [Epoch 42 Val] Step 40/50...
+  [Epoch 42 Val] Step 50/50...
+2026-10-30 05:05:13.170990: train_loss -0.6337
+2026-10-30 05:05:13.183160: val_loss -0.3375
+2026-10-30 05:05:13.193246: Pseudo dice [np.float32(0.7888), np.float32(0.3633), np.float32(0.0159), np.float32(0.428), np.float32(0.6332)]
+2026-10-30 05:05:13.201340: Epoch time: 518.78 s
+2026-10-30 05:05:13.498420: Yayy! New best EMA pseudo Dice: 0.42829999327659607
+2026-10-30 05:05:18.367550: 
+2026-10-30 05:05:18.380364: Epoch 43
+2026-10-30 05:05:18.390299: Current learning rate: 0.0017
+  [Epoch 43] Step 25/250 (10%) - Loss: -0.6016 (0.52 step/s)
+  [Epoch 43] Step 50/250 (20%) - Loss: -0.5266 (0.54 step/s)
+  [Epoch 43] Step 75/250 (30%) - Loss: -0.5232 (0.52 step/s)
+  [Epoch 43] Step 100/250 (40%) - Loss: -0.5667 (0.53 step/s)
+  [Epoch 43] Step 125/250 (50%) - Loss: -0.6057 (0.54 step/s)
+  [Epoch 43] Step 150/250 (60%) - Loss: -0.7741 (0.54 step/s)
+  [Epoch 43] Step 175/250 (70%) - Loss: -0.6152 (0.54 step/s)
+  [Epoch 43] Step 200/250 (80%) - Loss: -0.7980 (0.54 step/s)
+  [Epoch 43] Step 225/250 (90%) - Loss: -0.5806 (0.54 step/s)
+  [Epoch 43] Step 250/250 (100%) - Loss: -0.7207 (0.54 step/s)
+  [Epoch 43 Val] Step 10/50...
+  [Epoch 43 Val] Step 20/50...
+  [Epoch 43 Val] Step 30/50...
+  [Epoch 43 Val] Step 40/50...
+  [Epoch 43 Val] Step 50/50...
+2026-10-30 05:13:46.887924: train_loss -0.6519
+2026-10-30 05:13:46.901562: val_loss -0.3503
+2026-10-30 05:13:46.909669: Pseudo dice [np.float32(0.7726), np.float32(0.3623), np.float32(0.0866), np.float32(0.4763), np.float32(0.574)]
+2026-10-30 05:13:46.917354: Epoch time: 508.52 s
+2026-10-30 05:13:47.175235: Yayy! New best EMA pseudo Dice: 0.4309000074863434
+2026-10-30 05:13:51.959945: 
+2026-10-30 05:13:51.970468: Epoch 44
+2026-10-30 05:13:51.982545: Current learning rate: 0.00148
+  [Epoch 44] Step 25/250 (10%) - Loss: -0.6479 (0.52 step/s)
+  [Epoch 44] Step 50/250 (20%) - Loss: -0.5233 (0.53 step/s)
+  [Epoch 44] Step 75/250 (30%) - Loss: -0.6374 (0.54 step/s)
+  [Epoch 44] Step 100/250 (40%) - Loss: -0.5501 (0.54 step/s)
+  [Epoch 44] Step 125/250 (50%) - Loss: -0.7515 (0.54 step/s)
+  [Epoch 44] Step 150/250 (60%) - Loss: -0.6849 (0.54 step/s)
+  [Epoch 44] Step 175/250 (70%) - Loss: -0.5322 (0.54 step/s)
+  [Epoch 44] Step 200/250 (80%) - Loss: -0.7185 (0.54 step/s)
+  [Epoch 44] Step 225/250 (90%) - Loss: -0.5246 (0.54 step/s)
+  [Epoch 44] Step 250/250 (100%) - Loss: -0.6710 (0.54 step/s)
+  [Epoch 44 Val] Step 10/50...
+  [Epoch 44 Val] Step 20/50...
+  [Epoch 44 Val] Step 30/50...
+  [Epoch 44 Val] Step 40/50...
+  [Epoch 44 Val] Step 50/50...
+2026-10-30 05:22:23.666832: train_loss -0.6415
+2026-10-30 05:22:23.679482: val_loss -0.3434
+2026-10-30 05:22:23.693374: Pseudo dice [np.float32(0.7742), np.float32(0.3772), np.float32(0.0453), np.float32(0.4612), np.float32(0.5994)]
+2026-10-30 05:22:23.701111: Epoch time: 511.71 s
+2026-10-30 05:22:24.037066: Yayy! New best EMA pseudo Dice: 0.43299999833106995
+2026-10-30 05:22:29.028129: 
+2026-10-30 05:22:29.041115: Epoch 45
+2026-10-30 05:22:29.052188: Current learning rate: 0.00126
+  [Epoch 45] Step 25/250 (10%) - Loss: -0.5464 (0.55 step/s)
+  [Epoch 45] Step 50/250 (20%) - Loss: -0.5712 (0.53 step/s)
+  [Epoch 45] Step 75/250 (30%) - Loss: -0.7253 (0.53 step/s)
+  [Epoch 45] Step 100/250 (40%) - Loss: -0.7151 (0.54 step/s)
+  [Epoch 45] Step 125/250 (50%) - Loss: -0.7599 (0.54 step/s)
+  [Epoch 45] Step 150/250 (60%) - Loss: -0.6089 (0.53 step/s)
+  [Epoch 45] Step 175/250 (70%) - Loss: -0.5388 (0.54 step/s)
+  [Epoch 45] Step 200/250 (80%) - Loss: -0.5312 (0.54 step/s)
+  [Epoch 45] Step 225/250 (90%) - Loss: -0.7573 (0.53 step/s)
+  [Epoch 45] Step 250/250 (100%) - Loss: -0.7070 (0.54 step/s)
+  [Epoch 45 Val] Step 10/50...
+  [Epoch 45 Val] Step 20/50...
+  [Epoch 45 Val] Step 30/50...
+  [Epoch 45 Val] Step 40/50...
+  [Epoch 45 Val] Step 50/50...
+2026-10-30 05:31:00.737644: train_loss -0.6678
+2026-10-30 05:31:00.749751: val_loss -0.3611
+2026-10-30 05:31:00.760811: Pseudo dice [np.float32(0.7705), np.float32(0.3724), np.float32(0.0823), np.float32(0.4633), np.float32(0.6083)]
+2026-10-30 05:31:00.771572: Epoch time: 511.71 s
+2026-10-30 05:31:01.054176: Yayy! New best EMA pseudo Dice: 0.43560001254081726
+2026-10-30 05:31:02.706770: 
+2026-10-30 05:31:02.719566: Epoch 46
+2026-10-30 05:31:02.728748: Current learning rate: 0.00103
+  [Epoch 46] Step 25/250 (10%) - Loss: -0.5767 (0.50 step/s)
+  [Epoch 46] Step 50/250 (20%) - Loss: -0.7164 (0.54 step/s)
+  [Epoch 46] Step 75/250 (30%) - Loss: -0.6821 (0.68 step/s)
+  [Epoch 46] Step 100/250 (40%) - Loss: -0.6758 (0.78 step/s)
+  [Epoch 46] Step 125/250 (50%) - Loss: -0.5683 (0.85 step/s)
+  [Epoch 46] Step 150/250 (60%) - Loss: -0.6020 (0.91 step/s)
+  [Epoch 46] Step 175/250 (70%) - Loss: -0.7622 (0.96 step/s)
+  [Epoch 46] Step 200/250 (80%) - Loss: -0.6891 (1.00 step/s)
+  [Epoch 46] Step 225/250 (90%) - Loss: -0.7500 (1.04 step/s)
+  [Epoch 46] Step 250/250 (100%) - Loss: -0.7180 (1.07 step/s)
+  [Epoch 46 Val] Step 10/50...
+  [Epoch 46 Val] Step 20/50...
+  [Epoch 46 Val] Step 30/50...
+  [Epoch 46 Val] Step 40/50...
+  [Epoch 46 Val] Step 50/50...
+2026-10-30 05:35:09.300395: train_loss -0.6518
+2026-10-30 05:35:09.312105: val_loss -0.3734
+2026-10-30 05:35:09.322127: Pseudo dice [np.float32(0.7769), np.float32(0.3772), np.float32(0.1128), np.float32(0.4623), np.float32(0.6492)]
+2026-10-30 05:35:09.330532: Epoch time: 246.6 s
+2026-10-30 05:35:09.641178: Yayy! New best EMA pseudo Dice: 0.43959999084472656
+2026-10-30 05:35:11.008907: 
+2026-10-30 05:35:11.021331: Epoch 47
+2026-10-30 05:35:11.031482: Current learning rate: 0.00079
+  [Epoch 47] Step 25/250 (10%) - Loss: -0.7263 (1.43 step/s)
+  [Epoch 47] Step 50/250 (20%) - Loss: -0.6797 (1.47 step/s)
+  [Epoch 47] Step 75/250 (30%) - Loss: -0.7585 (1.46 step/s)
+  [Epoch 47] Step 100/250 (40%) - Loss: -0.6666 (1.46 step/s)
+  [Epoch 47] Step 125/250 (50%) - Loss: -0.8023 (1.47 step/s)
+  [Epoch 47] Step 150/250 (60%) - Loss: -0.6317 (1.48 step/s)
+  [Epoch 47] Step 175/250 (70%) - Loss: -0.6310 (1.49 step/s)
+  [Epoch 47] Step 200/250 (80%) - Loss: -0.6723 (1.48 step/s)
+  [Epoch 47] Step 225/250 (90%) - Loss: -0.7432 (1.49 step/s)
+  [Epoch 47] Step 250/250 (100%) - Loss: -0.5519 (1.50 step/s)
+  [Epoch 47 Val] Step 10/50...
+  [Epoch 47 Val] Step 20/50...
+  [Epoch 47 Val] Step 30/50...
+  [Epoch 47 Val] Step 40/50...
+  [Epoch 47 Val] Step 50/50...
+2026-10-30 05:38:10.414018: train_loss -0.6597
+2026-10-30 05:38:10.429610: val_loss -0.3679
+2026-10-30 05:38:10.441449: Pseudo dice [np.float32(0.7836), np.float32(0.3557), np.float32(0.0927), np.float32(0.4841), np.float32(0.6181)]
+2026-10-30 05:38:10.452536: Epoch time: 179.41 s
+2026-10-30 05:38:10.743934: Yayy! New best EMA pseudo Dice: 0.4424000084400177
+2026-10-30 05:38:11.555943: 
+2026-10-30 05:38:11.566818: Epoch 48
+2026-10-30 05:38:11.576004: Current learning rate: 0.00055
+  [Epoch 48] Step 25/250 (10%) - Loss: -0.6981 (1.52 step/s)
+  [Epoch 48] Step 50/250 (20%) - Loss: -0.6650 (1.57 step/s)
+  [Epoch 48] Step 75/250 (30%) - Loss: -0.6227 (1.56 step/s)
+  [Epoch 48] Step 100/250 (40%) - Loss: -0.5818 (1.55 step/s)
+  [Epoch 48] Step 125/250 (50%) - Loss: -0.6774 (1.56 step/s)
+  [Epoch 48] Step 150/250 (60%) - Loss: -0.6781 (1.56 step/s)
+  [Epoch 48] Step 175/250 (70%) - Loss: -0.7173 (1.55 step/s)
+  [Epoch 48] Step 200/250 (80%) - Loss: -0.5724 (1.55 step/s)
+  [Epoch 48] Step 225/250 (90%) - Loss: -0.7885 (1.55 step/s)
+  [Epoch 48] Step 250/250 (100%) - Loss: -0.8232 (1.55 step/s)
+  [Epoch 48 Val] Step 10/50...
+  [Epoch 48 Val] Step 20/50...
+  [Epoch 48 Val] Step 30/50...
+  [Epoch 48 Val] Step 40/50...
+  [Epoch 48 Val] Step 50/50...
+2026-10-30 05:41:05.627033: train_loss -0.658
+2026-10-30 05:41:05.639380: val_loss -0.3558
+2026-10-30 05:41:05.648864: Pseudo dice [np.float32(0.764), np.float32(0.3182), np.float32(0.0412), np.float32(0.4981), np.float32(0.6274)]
+2026-10-30 05:41:05.662413: Epoch time: 174.07 s
+2026-10-30 05:41:05.939547: Yayy! New best EMA pseudo Dice: 0.4431000053882599
+2026-10-30 05:41:06.736596: 
+2026-10-30 05:41:06.746339: Epoch 49
+2026-10-30 05:41:06.754515: Current learning rate: 0.0003
+  [Epoch 49] Step 25/250 (10%) - Loss: -0.7508 (1.54 step/s)
+  [Epoch 49] Step 50/250 (20%) - Loss: -0.6119 (1.55 step/s)
+  [Epoch 49] Step 75/250 (30%) - Loss: -0.5949 (1.53 step/s)
+  [Epoch 49] Step 100/250 (40%) - Loss: -0.7569 (1.53 step/s)
+  [Epoch 49] Step 125/250 (50%) - Loss: -0.7707 (1.54 step/s)
+  [Epoch 49] Step 150/250 (60%) - Loss: -0.6537 (1.54 step/s)
+  [Epoch 49] Step 175/250 (70%) - Loss: -0.6649 (1.55 step/s)
+  [Epoch 49] Step 200/250 (80%) - Loss: -0.6601 (1.55 step/s)
+  [Epoch 49] Step 225/250 (90%) - Loss: -0.6661 (1.55 step/s)
+  [Epoch 49] Step 250/250 (100%) - Loss: -0.7699 (1.54 step/s)
+  [Epoch 49 Val] Step 10/50...
+  [Epoch 49 Val] Step 20/50...
+  [Epoch 49 Val] Step 30/50...
+  [Epoch 49 Val] Step 40/50...
+  [Epoch 49 Val] Step 50/50...
+2026-10-30 05:44:01.642273: train_loss -0.6642
+2026-10-30 05:44:01.653883: val_loss -0.3629
+2026-10-30 05:44:01.662462: Pseudo dice [np.float32(0.7464), np.float32(0.3883), np.float32(0.0567), np.float32(0.5266), np.float32(0.5967)]
+2026-10-30 05:44:01.670143: Epoch time: 174.91 s
+2026-10-30 05:44:01.677479: Yayy! New best EMA pseudo Dice: 0.44510000944137573
+2026-10-30 05:44:02.720961: Training done.
+2026-10-30 05:44:02.814148: Using splits from existing split file: c:\Users\whate\Documents\Brain CT Hemorrage Detection\nnUNet\nnUNet_preprocessed\Dataset502_BrainCTICH_AL\splits_final.json
+2026-10-30 05:44:02.834025: The split file contains 1 splits.
+2026-10-30 05:44:02.846358: Desired fold for training: 0
+2026-10-30 05:44:02.859405: This split has 112 training and 20 validation cases.
+2026-10-30 05:44:02.872195: predicting ID_2931ca43_ID_2a2b28e0ab
+2026-10-30 05:44:03.137434: ID_2931ca43_ID_2a2b28e0ab, shape torch.Size([9, 32, 459, 384]), rank 0
+2026-10-30 05:44:11.688874: predicting ID_2e21c3f3_ID_bc8f99a0cc
+2026-10-30 05:44:11.935492: ID_2e21c3f3_ID_bc8f99a0cc, shape torch.Size([9, 32, 486, 412]), rank 0
+2026-10-30 05:44:13.335434: predicting ID_30d19531_ID_cf607a5cd7
+2026-10-30 05:44:13.632527: ID_30d19531_ID_cf607a5cd7, shape torch.Size([9, 32, 451, 386]), rank 0
+2026-10-30 05:44:14.981633: predicting ID_39e94772_ID_f1a5ef6a24
+2026-10-30 05:44:15.314562: ID_39e94772_ID_f1a5ef6a24, shape torch.Size([9, 36, 459, 416]), rank 0
+2026-10-30 05:44:16.929350: predicting ID_3e481fc5_ID_750530c215
+2026-10-30 05:44:17.285590: ID_3e481fc5_ID_750530c215, shape torch.Size([9, 32, 482, 449]), rank 0
+2026-10-30 05:44:19.920452: predicting ID_4a16396b_ID_1f3e0c2c5c
+2026-10-30 05:44:20.234487: ID_4a16396b_ID_1f3e0c2c5c, shape torch.Size([9, 30, 487, 512]), rank 0
+2026-10-30 05:44:22.832538: predicting ID_5910d129_ID_094eb98167
+2026-10-30 05:44:23.212974: ID_5910d129_ID_094eb98167, shape torch.Size([9, 34, 509, 444]), rank 0
+2026-10-30 05:44:24.723941: predicting ID_5f53ab26_ID_f1c7d54a53
+2026-10-30 05:44:25.010799: ID_5f53ab26_ID_f1c7d54a53, shape torch.Size([9, 32, 492, 509]), rank 0
+2026-10-30 05:44:27.772264: predicting ID_69b19057_ID_44d0da38f2
+2026-10-30 05:44:28.064951: ID_69b19057_ID_44d0da38f2, shape torch.Size([9, 32, 485, 509]), rank 0
+2026-10-30 05:44:30.751739: predicting ID_6caf8d60_ID_3634a47122
+2026-10-30 05:44:31.128266: ID_6caf8d60_ID_3634a47122, shape torch.Size([9, 40, 459, 406]), rank 0
+2026-10-30 05:44:32.852267: predicting ID_85f42dd5_ID_a0ef1a9eaf
+2026-10-30 05:44:33.217453: ID_85f42dd5_ID_a0ef1a9eaf, shape torch.Size([9, 36, 488, 439]), rank 0
+2026-10-30 05:44:34.446856: predicting ID_88dbe13f_ID_01c5078fbf
+2026-10-30 05:44:34.719932: ID_88dbe13f_ID_01c5078fbf, shape torch.Size([9, 36, 501, 456]), rank 0
+2026-10-30 05:44:37.292623: predicting ID_977da27d_ID_7ca7e2a2e4
+2026-10-30 05:44:37.719703: ID_977da27d_ID_7ca7e2a2e4, shape torch.Size([9, 46, 492, 400]), rank 0
+2026-10-30 05:44:39.231430: predicting ID_9dce269b_ID_4191982e02
+2026-10-30 05:44:39.646940: ID_9dce269b_ID_4191982e02, shape torch.Size([9, 44, 483, 410]), rank 0
+2026-10-30 05:44:41.275468: predicting ID_aaf2973d_ID_4002bc3ced
+2026-10-30 05:44:41.535093: ID_aaf2973d_ID_4002bc3ced, shape torch.Size([9, 24, 512, 512]), rank 0
+2026-10-30 05:44:43.267555: predicting ID_d2deede6_ID_799247e354
+2026-10-30 05:44:43.692366: ID_d2deede6_ID_799247e354, shape torch.Size([9, 35, 539, 539]), rank 0
+2026-10-30 05:44:47.905435: predicting ID_d9675573_ID_02237f7694
+2026-10-30 05:44:48.236494: ID_d9675573_ID_02237f7694, shape torch.Size([9, 40, 461, 408]), rank 0
+2026-10-30 05:44:49.668830: predicting ID_dd3d7720_ID_6a88b9c0eb
+2026-10-30 05:44:49.956845: ID_dd3d7720_ID_6a88b9c0eb, shape torch.Size([9, 30, 454, 416]), rank 0
+2026-10-30 05:44:50.942823: predicting ID_df3f0a7d_ID_fbcdf807a8
+2026-10-30 05:44:51.151723: ID_df3f0a7d_ID_fbcdf807a8, shape torch.Size([9, 32, 448, 416]), rank 0
+2026-10-30 05:44:52.299114: predicting ID_e714812a_ID_11a3b1afdc
+2026-10-30 05:44:52.684020: ID_e714812a_ID_11a3b1afdc, shape torch.Size([9, 34, 502, 435]), rank 0
+Traceback (most recent call last):
+  File [35m"<frozen runpy>"[0m, line [35m203[0m, in [35m_run_module_as_main[0m
+  File [35m"<frozen runpy>"[0m, line [35m88[0m, in [35m_run_code[0m
+  File [35m"c:\Users\whate\AppData\Local\Python\pythoncore-3.14-64\Scripts\nnUNetv2_train.exe\__main__.py"[0m, line [35m5[0m, in [35m<module>[0m
+    sys.exit([31mrun_training_entry[0m[1;31m()[0m)
+             [31m~~~~~~~~~~~~~~~~~~[0m[1;31m^^[0m
+  File [35m"c:\Users\whate\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\nnunetv2\run\run_training.py"[0m, line [35m259[0m, in [35mrun_training_entry[0m
+    [31mrun_training[0m[1;31m(args.dataset_name_or_id, args.configuration, args.fold, args.tr, args.p, args.pretrained_weights,[0m
+    [31m~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+                 [1;31margs.num_gpus, args.npz, args.c, args.val, args.disable_checkpointing, args.val_best,[0m
+                 [1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+                 [1;31mdevice=device)[0m
+                 [1;31m^^^^^^^^^^^^^^[0m
+  File [35m"c:\Users\whate\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\nnunetv2\run\run_training.py"[0m, line [35m204[0m, in [35mrun_training[0m
+    [31mnnunet_trainer.perform_actual_validation[0m[1;31m(export_validation_probabilities)[0m
+    [31m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  File [35m"c:\Users\whate\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\nnunetv2\training\nnUNetTrainer\nnUNetTrainer.py"[0m, line [35m1397[0m, in [35mperform_actual_validation[0m
+    metrics = compute_metrics_on_folder(join(self.preprocessed_dataset_folder_base, 'gt_segmentations'),
+                                        validation_output_folder,
+    ...<6 lines>...
+                                        num_processes=default_num_processes * dist.get_world_size() if
+                                        self.is_ddp else default_num_processes)
+  File [35m"c:\Users\whate\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\nnunetv2\evaluation\evaluate_predictions.py"[0m, line [35m134[0m, in [35mcompute_metrics_on_folder[0m
+    files_ref = subfiles(folder_ref, suffix=file_ending, join=False)
+  File [35m"c:\Users\whate\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\batchgenerators\utilities\file_and_folder_operations.py"[0m, line [35m69[0m, in [35msubfiles[0m
+    with [31mos.scandir[0m[1;31m(folder)[0m as entries:
+         [31m~~~~~~~~~~[0m[1;31m^^^^^^^^[0m
+[1;35mFileNotFoundError[0m: [35m[WinError 3] The system cannot find the path specified: 'c:\\Users\\whate\\Documents\\Brain CT Hemorrage Detection\\nnUNet\\nnUNet_preprocessed\\Dataset502_BrainCTICH_AL\\gt_segmentations'[0m
