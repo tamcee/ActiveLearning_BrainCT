@@ -185,8 +185,8 @@ Active learning reduced false positive volume by **61.1%** relative to the basel
 
 ## Contributors
 
-- **Jyot Shah**
-- **Tamanna Chauhan**
-- **Tejashree Venkatesh**
-- **Bhavesh Shastri**
+- **Jyot Shah** ([@Jyot-Shah](https://github.com/Jyot-Shah))
+- **Tamanna Chauhan** ([@tamcee](https://github.com/tamcee))
+- **Tejashree Venkatesh** ([@tejashree2405](https://github.com/tejashree2405))
+- **Bhavesh Shastri** ([@lazyGoliath](https://github.com/lazyGoliath))
 
